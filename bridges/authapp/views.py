@@ -25,7 +25,10 @@ def restricted_area(request):
     user_companies = CompanyUsers.objects.filter(user_id=user.pk, works=True)
     user_projects = ProjectManagers.objects.filter(manager_id=user.pk).order_by('-project__updated')
     user_orders = Order.objects.filter(user_id=user.pk)
-    if user.is_staff:
+    if user.is_superuser:
+        partners = Company.objects.all().order_by('name')
+        users = Users.objects.all().order_by('last_name')
+    elif user.is_staff:
         partners = Company.objects.all().order_by('name')
         users = Users.objects.all().order_by('last_name').exclude(
             Q(is_staff=True) |
