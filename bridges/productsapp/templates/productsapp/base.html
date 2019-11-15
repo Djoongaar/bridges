@@ -106,7 +106,6 @@
     <script type="text/javascript" src="{% static 'assets/js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/jquery.maskedinput.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/inputmask.js' %}"></script>
-
     <script type="text/javascript" src="{% static 'assets/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/animsition.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/plugins.js' %}"></script>
@@ -124,6 +123,8 @@
             $("#id_email").inputmask("email")
         });
     </script>
+    {% block js %}
+    {% endblock %}
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@
                                         <div class="wprt-galleries galleries w-770px" data-width="142" data-margin="15">
                                             <div id="wprt-slider" class="flexslider">
                                                 <ul class="slides">
-<!----------------------------------------- ПОДГРУЗКА КАРТИНОК ИЗ МОДЕЛИ ProjectImage----------------------------------------->
+                                                    <!----------------------------------------- ПОДГРУЗКА КАРТИНОК ИЗ МОДЕЛИ ProjectImage----------------------------------------->
                                                     {% for item in object.images.select_related %}
                                                         <li class="flex-active-slide">
                                                             <a class="zoom" href="/media/{{ item.image }}"><i
@@ -28,7 +28,7 @@
                                                             <img src="/media/{{ item.image }}" alt="pic"/>
                                                         </li>
                                                     {% endfor %}
-<!-- ---------------------------------------/ .ПОДГРУЗКА КАРТИНОК ИЗ МОДЕЛИ ProjectImage----------------------------------------->
+                                                    <!-- ---------------------------------------/ .ПОДГРУЗКА КАРТИНОК ИЗ МОДЕЛИ ProjectImage----------------------------------------->
 
                                                 </ul>
                                             </div>
@@ -36,37 +36,42 @@
                                             <div id="wprt-carousel" class="flexslider">
                                                 <ul class="slides">
 
-<!-------------------------------------------- ПОДГРУЗКА МИНИАТЮРНЫХ КАРТИНОК ИЗ МОДЕЛИ ProjectImage-------------------------------------------->
+                                                    <!-------------------------------------------- ПОДГРУЗКА МИНИАТЮРНЫХ КАРТИНОК ИЗ МОДЕЛИ ProjectImage-------------------------------------------->
                                                     {% for item in object.images.select_related %}
                                                         <li><img src="/media/{{ item.image }}" alt="pic"></li>
                                                     {% endfor %}
-<!-------------------------------------------- ПОДГРУЗКА МИНИАТЮРНЫХ КАРТИНОК ИЗ МОДЕЛИ ProjectImage-------------------------------------------->
+                                                    <!-------------------------------------------- ПОДГРУЗКА МИНИАТЮРНЫХ КАРТИНОК ИЗ МОДЕЛИ ProjectImage-------------------------------------------->
 
                                                 </ul>
                                             </div>
                                         </div>
-                                    {% if request.user.is_staff %}
-                                        <a href="{% url 'projects:gallery_update' object.pk %}">... изменить фотографии</a>
-                                    {% endif %}
+                                        {% if request.user.is_staff %}
+                                            <a href="{% url 'projects:gallery_update' object.pk %}">... изменить
+                                                фотографии</a>
+                                        {% endif %}
                                     </div><!-- /.col-md-8 -->
                                     <div class="col-md-4">
                                         <div class="wprt-spacer" data-desktop="0" data-mobi="0" data-smobi="0"></div>
 
-{#<!- -------------------------------------------- ИНФОРМАЦИЯ О ПРОЕКТЕ ИЗ МОДЕЛИ Project- -------------------------------------------->#}
-                                        <h3 class="line-height-normal margin-bottom-10">{{ object.name }}</h3>
-                                        {% get_obj_perms request.user for object as "change_project" %}
-                                        {% if request.user.is_staff %}
-                                            <a href="{% url 'projects:project_update' object.pk %}">
-                                                <i class="fa fa-pencil" aria-hidden="true" style="color: black;"> редактировать</i>
-                                            </a>
-                                        {% endif %}
+                                        {#<!- -------------------------------------------- ИНФОРМАЦИЯ О ПРОЕКТЕ ИЗ МОДЕЛИ Project- -------------------------------------------->#}
+                                        <h3 class="line-height-normal margin-bottom-10">{{ object.name }}
+                                            {% if request.user.is_staff %}
+                                                <a href="{% url 'projects:project_update' object.pk %}">
+                                                    <i class="fa fa-pencil" aria-hidden="true"
+                                                       style="color: black;font-size: small;"> </i>
+                                                </a>
+                                            {% endif %}
+                                        </h3>
+                                        <div class="wprt-lines style-1 custom-3">
+                                            <div class="line-1"></div>
+                                            <div class="line-2"></div>
+                                        </div>
+
 
                                         <div class="wprt-spacer" data-desktop="15" data-mobi="15" data-smobi="15"></div>
-                                        <div>Статус проекта: {{ object.status }}</div>
-                                        <div>{{ object.city }}. {{ object.description }}</div>
+                                        <div><i>Статус проекта: {{ object.status | title }}</i></div>
+                                        <div><i>Регион: {{ object.city }}. {{ object.description }}</i></div>
 
-
-                                        {% if request.user.is_authenticated %}
 
 {#  ------------------------------------------- ПОЛУЧЕНИЕ АДРЕСА И/ИЛИ КООРДИНАТ -------------------------------------------#}
 
@@ -76,136 +81,192 @@
                                                 {% if object.address %}
                                                     <i>Адрес объекта: {{ object.address }}</i><br>
                                                 {% endif %}
-                                                {% if object.coordinate %}
-                                                    <i>Координаты объекта: {{ object.coordinate }}</i>
-                                                {% endif %}
                                             {% else %}
                                                 <p style="color: red"><i>Точное местоположение объекта не указано</i>
                                                 </p>
                                             {% endif %}
+                                            </div>
+                                            </div>
+                                            </div>
+                                            </section>
+
+{#  ------------------------------------- ПОЛУЧЕНИЕ МЕНЕДЖЕРОВ ПРОЕКТА -------------------------------------#}
+
+                    <section class="wprt-section">
+                        <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
+                        <article class="hentry">
+                            <div class="post-content-wrap">
+                                <h2 class="post-title">
+                                        <span class="post-title-inner">
+                                            МЕНЕДЖМЕНТ
+                                            <a href="{% url 'projects:manager_create' object.pk %}">
+                                                <i class="fa fa-plus" aria-hidden="true"
+                                                   style="color: #337ab7; font-size: 16px"></i>
+                                            </a>
+                                        </span>
+                                    <div class="wprt-lines style-1 custom-3">
+                                        <div class="line-1"></div>
+                                        <div class="line-2"></div>
+                                    </div>
+                                </h2><!-- /.post-title -->
+                                {% for item in object.get_managers %}
+                                    <div class="post-meta style-2">
+                                        <div class="post-meta-content">
+                                            <div class="post-meta-content-inner">
+                                    <span class="post-by-author item">
+                                        <strong>
+                                        <span class="inner">
+                                            <a href="{{ item.manager.get_absolute_url }}" title="" rel="author">
+                                                {{ item.manager }}
+                                            </a>
+                                        </span>
+                                        </strong>
+                                    </span>
+                                            {% if item.manager.get_company %}
+                                                {% for i in item.manager.get_company %}
+                                                <span class="post-date item">
+                                                    <span class="inner">
+                                                        <a href="{{ i.company.get_absolute_url }}" title="" rel="author">
+                                                            {{ i.company.form }} {{ i.company.name }}
+                                                        </a>
+                                                    </span>
+                                                </span>
+                                                {% endfor %}
+                                            {% endif %}
+                                                <span class="post-date item">
+                                        <span class="inner"><span
+                                                class="entry-date">{{ item.role }}</span></span>
+                                    </span>
+                                                <span class="post-date item">
+                                        <span class="inner"><span
+                                                class="entry-date">Назначен: {{ item.created|date:'d.m.Y' }}</span></span>
+                                    </span>
+                                                <span class="post-comment item">
+                                        <span class="inner">
+                                            <span class="entry-date">Последнее посещение: {{ item.manager.last_login }}</span>
+                                        </span>
+                                    </span>
+                                                {% if request.user.is_superuser %}
+                                                    <span class="post-date item">
+                                                    <span class="inner">
+                                                    <a href="{% url 'projects:manager_delete' object.pk item.pk %}">
+                                                        <i class="fa fa-ban" aria-hidden="true"
+                                                           style="color: red"></i>
+                                                    </a>
+                                                    </span>
+                                                </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div><!-- /.post-meta -->
+                                {% endfor %}
+
+                            </div><!-- /.post-content-wrap -->
+                        </article>
+                                    </div>
+                                </div>
+                        </div>
+                    </section>
 
 {#  ------------------------------------- ПОЛУЧЕНИЕ КОНТРАГЕНТОВ ПРОЕКТА -------------------------------------#}
-
-                                            <div class="wprt-spacer" data-desktop="15" data-mobi="15"
-                                                 data-smobi="15"></div>
-                                            <div class="wprt-lines style-1 custom-4">
-                                                <div class="line-1"></div>
-                                            </div>
-                                            <div class="wprt-spacer" data-desktop="15" data-mobi="15"
-                                                 data-smobi="15"></div>
-                                            <i>Контрагенты:</i>
-                                            {% if object.get_companies %}
-                                                {% for item in object.get_companies %}
-                                                    <li>
-                                                        <i>
-                                                            {{ item.role | capfirst }}: <a href="{{ item.company.get_absolute_url }}">{{ item.company.form }} {{ item.company.name }}</a>
-                                                        </i>
-                                                        {% if request.user.is_staff %}
-                                                            <a href="{% url 'projects:company_delete' object.pk item.pk %}">
-                                                                <i class="fa fa-ban" aria-hidden="true"
-                                                                   style="color: red"></i>
-                                                            </a>
-                                                        {% endif %}
-                                                    </li>
-                                                {% endfor %}
-                                            {% endif %}
-                                            {% if request.user.is_staff %}
-                                                <li>
-                                                    <a href="{% url 'projects:company_create' object.pk %}">
-                                                        <i class="fa fa-plus" aria-hidden="true" style="color: black"></i>
-                                                    </a>
-                                                </li>
-                                                <div class="wprt-spacer" data-desktop="15" data-mobi="15"
-                                                     data-smobi="15"></div>
-                                                <div class="wprt-lines style-1 custom-4">
-                                                    <div class="line-1"></div>
-                                                </div>
-                                            {% endif %}
-
-{# ----------------------------------------- ПОЛУЧЕНИЕ УЧАСТНИКОВ ПРОЕКТА------------------------------------#}
-
-                                            <div class="wprt-spacer" data-desktop="15" data-mobi="15"
-                                                 data-smobi="15"></div>
-                                            <i>Команда:</i>
-                                            {% if object.get_managers %}
-                                                {% for item in object.get_managers %}
-                                                    <li>
-                                                        <i>
-                                                            <a href="{{ item.manager.get_absolute_url }}">
-                                                                {{ item.manager.first_name }} {{ item.manager.last_name }}
-                                                            </a>
-                                                            ({{ item.role | lower }})
-                                                        </i>
-                                                        {% if item.manager.get_company %}
-                                                            {% for i in item.manager.get_company %}
-                                                                <i>,<a href="{{ i.company.get_absolute_url }}"> {{ i.company.form }} {{ i.company.name }}</a></i>
-                                                            {% endfor %}
-                                                        {% endif %}
-                                                        {% if request.user.is_superuser %}
-                                                        <a href="{% url 'projects:manager_delete' object.pk item.pk %}">
-                                                            <i class="fa fa-ban" aria-hidden="true"
-                                                               style="color: red"></i>
-                                                        </a>
-                                                        {% endif %}
-                                                    </li>
-                                                {% endfor %}
-                                            {% endif %}
-                                            {% if request.user.is_superuser %}
-                                                <li>
-                                                    <a href="{% url 'projects:manager_create' object.pk %}">
-                                                        <i class="fa fa-plus" aria-hidden="true"
-                                                           style="color: black"></i>
-                                                    </a>
-                                                </li>
-                                                <div class="wprt-spacer" data-desktop="15" data-mobi="15"
-                                                     data-smobi="15"></div>
-                                                <div class="wprt-lines style-1 custom-4">
-                                                    <div class="line-1"></div>
-                                                </div>
-                                            {% endif %}
-                                            <div class="wprt-spacer" data-desktop="15" data-mobi="15"
-                                                 data-smobi="15"></div>
-{#                                            {% if request.user.is_staff %}#}
-{#                                                <a href="{% url 'projects:project_discuss_items' object.pk %}">#}
-{#                                                    Обсуждение проекта#}
-{#                                                </a>#}
-{#                                            {% endif %}#}
-                                    {% endif %}
-                                    </div>
+                    <section class="wprt-section">
+                        <div class="container">
+                                <div class="row">
                                     <div class="col-md-12">
-                                        <div class="wprt-spacer" data-desktop="60" data-mobi="60" data-smobi="60"></div>
-                                    </div><!-- /.col-md-12 -->
-                                </div>
-                            </div>
-                        </section>
+                                    <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
+                        <article class="hentry">
+                            <div class="post-content-wrap">
+                                <h2 class="post-title">
+                                        <span class="post-title-inner">
+                                            КОНТРАГЕНТЫ
+                                            <a href="{% url 'projects:company_create' object.pk %}">
+                                                <i class="fa fa-plus" aria-hidden="true"
+                                                   style="color: #337ab7; font-size: 16px"></i>
+                                            </a>
+                                        </span>
+                                    <div class="wprt-lines style-1 custom-3">
+                                        <div class="line-1"></div>
+                                        <div class="line-2"></div>
+                                    </div>
+                                </h2><!-- /.post-title -->
+                                {% for item in object.get_companies %}
+                                    <div class="post-meta style-2">
+                                        <div class="post-meta-content">
+                                            <div class="post-meta-content-inner">
+                                    <span class="post-by-author item">
+                                        <strong>
+                                        <span class="inner">
+                                            <a href="{{ item.company.get_absolute_url }}" title="" rel="author">
+                                                {{ item.company.form }} {{ item.company.name }}
+                                            </a>
+                                        </span>
+                                        </strong>
+                                    </span>
+                                                <span class="post-date item">
+                                                    <span class="inner">
+                                                        <a href="{{ i.company.get_absolute_url }}" title=""
+                                                           rel="author">
+                                                            {{ item.role }}
+                                                        </a>
+                                                    </span>
+                                                </span>
+                                                <span class="post-date item">
+                                        <span class="inner"><span
+                                                class="entry-date">Назначен: {{ item.created|date:'d.m.Y' }}</span></span>
+                                    </span>
+                                                {% if request.user.is_superuser %}
+                                                    <span class="post-date item">
+                                                    <span class="inner">
+                                                    <a href="{% url 'projects:company_delete' object.pk item.pk %}">
+                                                        <i class="fa fa-ban" aria-hidden="true"
+                                                           style="color: red"></i>
+                                                    </a>
+                                                    </span>
+                                                </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div><!-- /.post-meta -->
+                                {% endfor %}
 
-{# ---------------------------------------------------- РАБОТА НАД ПРОЕКТОМ ----------------------------------------------------#}
+                            </div><!-- /.post-content-wrap -->
+                        </article>
+                                    </div>
+                                </div>
+                        </div>
+                    </section>
+
+{# ---------------------------------------------------- ТЕХНИЧЕСКИЕ РЕШЕНИЯ ----------------------------------------------------#}
 
                         <section class="wprt-section">
                             <div class="container">
                                 <div class='row'>
-{#                                    <div class="col-md-12">#}
-{#                                        <h2 class="text-center margin-bottom-10">Работа над проектом</h2>#}
-{#                                        <div class="wprt-lines style-2 custom-1">#}
-{#                                            <div class="line-1"></div>#}
-{#                                        </div>#}
-{#                                        <div class="wprt-spacer" data-desktop="20" data-mobi="40" data-smobi="40"></div>#}
-{#                                    </div>#}
                                     <div class="col-md-12">
+                                        <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
+
+                                        <h3 class="line-height-normal margin-bottom-10">ТЕХНОЛОГИИ</h3>
+                                        <div class="wprt-lines style-1 custom-3">
+                                            <div class="line-1"></div>
+                                            <div class="line-2"></div>
+                                        </div>
+                                            <div class="wprt-spacer" data-desktop="25" data-mobi="15" data-smobi="15"></div>
                                         <div class="wprt-toggle active style-1">
                                             <h3 class="toggle-title">Технические решения</h3>
                                             <div class="toggle-content" style="color: #4d4949;">
                                                 <table class="tab-content">
                                                     <tr>
-                                                        <td style="text-align: center; font-weight: bold; width: 40%;">
+                                                        <td style="text-align: center; width: 40%;">
                                                             Техническое решение
                                                         </td>
-                                                        <td style="text-align: center; font-weight: bold;">Объем</td>
-                                                        <td style="text-align: center; font-weight: bold;">Ед. изм.</td>
-                                                        <td style="text-align: center; font-weight: bold; width: 40%">
+                                                        <td style="text-align: center;">Объем</td>
+                                                        <td style="text-align: center;">Ед. изм.</td>
+                                                        <td style="text-align: center; width: 40%;">
                                                             Наименование работ и конструкций
                                                         </td>
-                                                        <td style="text-align: center; font-weight: bold; width: 5%">-</td>
+                                                        <td style="text-align: center; width: 5%;">-</td>
                                                     </tr>
                                                     {% for item in object.get_products %}
                                                         <tr>
@@ -238,19 +299,87 @@
 {#                                                <a class="" href="{% url 'projects:product_update' object.pk %}">... изменить</a>#}
                                             </div>
                                         </div>
-
+                                    </div><!-- /.col-md-12 -->
+{# ---------------------------------------------------- ВЫВЕДЕНИЕ КАРТЫ ----------------------------------------------------#}
+                                    {% if object.coordinate %}
                                         <div class="col-md-12">
-                                            <div class="wprt-spacer" data-desktop="70" data-mobi="60"
-                                                 data-smobi="60"></div>
-                                        </div>
+                                            <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
 
-                                    </div><!-- /.row -->
+                                        <h3 class="line-height-normal margin-bottom-10">НА КАРТЕ</h3>
+                                        <div class="wprt-lines style-1 custom-3">
+                                            <div class="line-1"></div>
+                                            <div class="line-2"></div>
+                                        </div>
+                                            <div class="wprt-spacer" data-desktop="25" data-mobi="15" data-smobi="15"></div>
+                                            <div id="map"
+                                                 style="margin: 0 auto; height:500px; background-color: #f8f8f8;"></div>
+                                            {#                                        <div class="wprt-spacer" data-desktop="50" data-mobi="40"#}
+                                            {#                                             data-smobi="40"></div>#}
+                                        </div><!-- /.col-md-12 -->
+                                    {% endif %}
+                                </div><!-- /.row -->
                                 </div><!-- /.container -->
                         </section>
+                        <div class="col-md-12">
+                            <div class="wprt-spacer" data-desktop="70" data-mobi="60"
+                                 data-smobi="60"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
 
+{% block js %}
+    <!-- YMapScript -->
+    <!--
+        Укажите свой API-ключ. Тестовый ключ НЕ БУДЕТ работать на других сайтах.
+        Получить ключ можно в Кабинете разработчика: https://developer.tech.yandex.ru/keys/
+    -->
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=AEn2lV0BAAAA1m79MAIATuxrbLClouzusA1TTSSAGywdrdoAAAAAAAAAAAB59JqmHy2xqqSwC-QVOrN_1q7Wlw=="
+            type="text/javascript"></script>
+    <script>
+        ymaps.ready(function () {
+            var myMap = new ymaps.Map('map', {
+                    center: [{{ object.coordinate }}],
+                    zoom: 9,
+                    controls: ['zoomControl', 'fullscreenControl',]
+                }, {
+                    searchControlProvider: 'yandex#search'
+                }),
+
+                // Создаём макет содержимого.
+                MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
+                    '<div style="color: #FFFFFF; font-weight: bold;">$[properties.iconContent]</div>'
+                ),
+                myPlacemark = new ymaps.Placemark([-83.795352, -171.237534], {}, {
+                iconLayout: 'default#imageWithContent',iconImageHref: 'none',})
+
+                    {% if object.coordinate %}
+                        {{ object.map_mark }} = new ymaps.Placemark([{{ object.coordinate }}], {
+                        balloonContent: '<b>{{object.name}}</b>'
+                    }, {
+                        // Опции.
+                        // Необходимо указать данный тип макета.
+                        iconLayout: 'default#image',
+                        // Своё изображение иконки метки.
+                        iconImageHref: '{% static 'images/mark_map.png' %}',
+                        // Размеры метки.
+                        iconImageSize: [30, 42],
+                        // Смещение левого верхнего угла иконки относительно
+                        // её "ножки" (точки привязки).
+                        iconImageOffset: [-15, -40]
+                    })
+                    {% endif %}
+            ;
+
+
+            myMap.geoObjects
+                .add(myPlacemark)
+            {% if object.coordinate %}
+                .add({{ object.map_mark }})
+            {% endif %}
+        });
+    </script>
 {% endblock %}

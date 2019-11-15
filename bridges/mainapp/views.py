@@ -9,7 +9,9 @@ def index(request):
     products = TechnicalSolutions.objects.all().order_by('pk')
     context = {
         'latest_projects': latest_projects,
-        'products': products
+        'products': products,
+        'page_title': 'Мосты ТемпСтройСистемы',
+        'bred_title': 'Мосты ТемпСтройСистемы'
     }
     return render(request, 'mainapp/index.html', context)
 

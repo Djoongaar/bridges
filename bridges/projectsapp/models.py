@@ -47,7 +47,6 @@ class Project(models.Model):
     address = models.CharField(verbose_name='адрес', max_length=512, blank=True, null=True)
     coordinate = models.CharField(verbose_name='координаты', max_length=34, null=True, blank=True)
     map_mark = models.SlugField(verbose_name='id метки на карте', max_length=128, blank=True)
-    text_for_map = models.TextField(verbose_name='текст для метки', max_length=240, null=True, blank=True)
     is_active = models.BooleanField(verbose_name='активен', default=False)
 
     def get_absolute_url(self):
