@@ -22,9 +22,10 @@
                                                     <div class="service-item-wrap">
                                                         <i><h6 class="title font-size-15"><a href="{% url 'products:product' item.slug %}">{{ item.name }}</a>
                                                         </h6></i>
-                                                        <p class="desc">{{ item.short_desc | truncatechars:100 }}</p>
+                                                        <p class="desc" style="display: block">{{ item.short_desc }}</p>
                                                         <a href="{% url 'products:product' item.slug %}"
                                                            class="wprt-button small">ПОДРОБНО</a>
+{#                                                        <button class="wprt-button">ПОДРОБНЕЕ</button>#}
                                                     </div>
                                                 </div>
                                                 <div class="wprt-spacer" data-desktop="30" data-mobi="40"
@@ -45,4 +46,22 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+{#    <script>#}
+{#    let mainContent = document.getElementById('main-content');#}
+{#    let buttons = mainContent.querySelectorAll('.wprt-button');#}
+{#    buttons.forEach(function(button) {#}
+{#        let desc = button.parentElement.querySelector('.desc');#}
+{#        console.log(desc);#}
+{#        button.addEventListener('click', function () {#}
+{#            if (desc.style.display === 'block') {#}
+{#                desc.style.display = 'none'#}
+{#            } else {#}
+{#                desc.style.display = 'block'#}
+{#            }#}
+{#        })#}
+{#    })#}
+{#    </script>#}
 {% endblock %}
