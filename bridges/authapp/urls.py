@@ -3,7 +3,7 @@ from django.contrib.auth import views as auth_views
 from authapp import views as authapp
 
 urlpatterns = [
-    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('account/login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register/', authapp.register, name='register'),
     path('', authapp.restricted_area, name='restricted_area'),
@@ -22,3 +22,5 @@ urlpatterns = [
     path('self/user/company/list/<int:pk>', authapp.company_self_user_list, name='company_self_user_list'),
     path('user/company/list/<int:pk>', authapp.company_user_list, name='company_user_list'),
 ]
+
+
