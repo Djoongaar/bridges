@@ -273,6 +273,10 @@ input[type="submit"]:focus { outline: 0; background-color: #4b4b4b; color: #fff;
 /* Links */
 a { color: #191970; outline: 0; text-decoration: none; -webkit-transition: all ease .238s; -moz-transition: all ease .238s; transition: all ease .238s; }
 
+.bottom-bar-content a {
+    color: #484848;
+}
+
 a:hover,
 a:focus,
 a:active { outline: 0; color: #4b4b4b; text-decoration: none }
@@ -1156,7 +1160,7 @@ body.page #main-content { padding-top: 0; padding-bottom: 0; }
 /* Bottom Bar
 -------------------------------------------------------------- */
 #bottom { font-size: 0.857em; background-color: #101010; padding: 19px 0; color: #484848; font-family: "Montserrat", sans-serif; }
-#bottom a:hover { color: #fff; }
+#bottom a:hover { color: #337ab7; }
 
 #bottom .bottom-bar-inner-wrap { display: table; overflow: hidden; width: 100%; }
 #bottom .bottom-bar-content { display: table-cell; margin: 0; text-align: left; vertical-align: middle; width: 50%;}
