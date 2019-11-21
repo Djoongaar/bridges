@@ -92,12 +92,14 @@
                                                         {% csrf_token %}
                                                         <input type="hidden" name="next" value="{{ next }}"/>
                                                         <p><input type="submit" value="Отправить"></p>
+                                                        <p>
+                                                            <a href="/accounts/facebook/login/?process=login"><img src="{% static 'assets/icon/facebook.png' %}" alt="" style="width: 220px"></a>
+                                                        </p>
                                                     </form>
-                                                    <p class="n_text"><a href="{% url 'register' %}">Зарегистрироваться</a></p>
-                                                    <p class="n_text"><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+                                                    <div class="wprt-spacer" data-desktop="40" data-mobi="20" data-smobi="20"></div>
+                                                    <p class="n_text"><i><a href="{% url 'register' %}">Зарегистрироваться</a></i></p>
+                                                    <p class="n_text"><i><a href="{% url 'password_reset' %}">Забыли пароль?</a></i></p>
                                                 </div>
-
-
                                             </div>
                                             <!-- /.col-md-12 -->
                                         </div><!-- /.row -->

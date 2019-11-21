@@ -52,10 +52,7 @@ class ProjectRead(DetailView):
         if self.request.user.is_staff:
             return Project.objects.all()
         else:
-            return Project.objects.filter(
-                Q(status__exact='завершен') |
-                Q(managers__manager_id=self.request.user.pk)
-            )
+            return Project.objects.filter(status__exact='завершен')
 
     def get_context_data(self, **kwargs):
         context = super(ProjectRead, self).get_context_data(**kwargs)

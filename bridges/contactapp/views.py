@@ -16,6 +16,7 @@ def index(request):
                                                                                                 email_data.subject,
                                                                                                 email_data.message)
             send_mail(subject, message, settings.EMAIL_HOST_USER, [settings.EMAIL_HOST_USER], fail_silently=False)
+            form = ContactForm()
     else:
         form = ContactForm()
 

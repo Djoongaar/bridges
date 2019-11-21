@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -16,6 +17,7 @@ urlpatterns = [
     path('services/', include('servicesapp.urls', namespace='services')),
     path('orders/', include('ordersapp.urls', namespace='orders')),
     # path('news/', include('newsapp.urls', namespace='news')),
+    url(r'^accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
