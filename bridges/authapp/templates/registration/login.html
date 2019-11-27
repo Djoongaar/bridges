@@ -95,6 +95,12 @@
                                                         <p>
                                                             <a href="/accounts/facebook/login/?process=login"><img src="{% static 'assets/icon/facebook.png' %}" alt="" style="width: 220px"></a>
                                                         </p>
+                                                        <p>
+                                                            <a href="{% url 'social:begin' 'vk-oauth2' %}?process=login"><img src="{% static 'assets/icon/vkontakte.png' %}" alt="" style="width: 220px"></a>
+                                                        </p>
+{#                                                        <p>#}
+{#                                                            <a href="{% url 'social:begin' 'instagram' %}"><img src="{% static 'assets/icon/vkontakte.png' %}" alt="" style="width: 220px"></a>#}
+{#                                                        </p>#}
                                                     </form>
                                                     <div class="wprt-spacer" data-desktop="40" data-mobi="20" data-smobi="20"></div>
                                                     <p class="n_text"><i><a href="{% url 'register' %}">Зарегистрироваться</a></i></p>

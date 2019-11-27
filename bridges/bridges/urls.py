@@ -17,6 +17,7 @@ urlpatterns = [
     path('services/', include('servicesapp.urls', namespace='services')),
     path('orders/', include('ordersapp.urls', namespace='orders')),
     # path('news/', include('newsapp.urls', namespace='news')),
+    path('', include('social_django.urls', namespace='social')),
     url(r'^accounts/', include('allauth.urls')),
 ]
 

@@ -42,14 +42,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.vk',
     'django_extensions',
-    # 'allauth.socialaccount.providers.google',
-    # 'allauth.socialaccount.providers.instagram',
-    # 'allauth.socialaccount.providers.vk',
-    # 'allauth.socialaccount.providers.pinterest',
+    'social_django',
 ]
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+# ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 SITE_ID = 1
 
 MIDDLEWARE = [
@@ -162,8 +158,14 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 # Authapp end ===================================================
 
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
     'guardian.backends.ObjectPermissionBackend',
+    'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
 )
+SOCIAL_AUTH_VK_OAUTH2_KEY = '7221437'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'MBcQDBmVaVf7HDby8t1l'
