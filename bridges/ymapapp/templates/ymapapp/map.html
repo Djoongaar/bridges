@@ -28,7 +28,8 @@
                 {%  for item in projects %}
                     {% if item.coordinate %}
                         {{ item.map_mark }} = new ymaps.Placemark([{{ item.coordinate }}], {
-                        balloonContent: '<b>{{item.name}}</b><p>{{item.text_for_map}}</p><p><a href="{% url 'projects:project' item.pk %}">Ссылка на проект</a></p>'
+                        hintContent: '<b>{{item.name}}</b>',
+                        balloonContent: '<a href="{% url 'projects:project' item.pk %}"><b>{{item.name}}</b><p><img src="/media/{{ item.image | default:"projects_images/avatars/no_avatar.jpg" }}" style="height:200px" alt="{{ item.name }}"></p></a>'
                     }, {
                         // Опции.
                         // Необходимо указать данный тип макета.
