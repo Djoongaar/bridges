@@ -90,9 +90,8 @@
                                             </div>
                                             </section>
 
-{#  ------------------------------------- ПОЛУЧЕНИЕ МЕНЕДЖЕРОВ ПРОЕКТА -------------------------------------#}
-
-                    <section class="wprt-section">
+{#  ------------------------------------- МЕНЮ ПРОЕКТА -------------------------------------#}
+                    <section class="wprt-section custom_insert">
                         <div class="container">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -100,20 +99,40 @@
                         <article class="hentry">
                             <div class="post-content-wrap">
                                 <h2 class="post-title">
-                                        <span class="post-title-inner">
-                                            МЕНЕДЖМЕНТ
+
+                                        <span class="post-title-inner" id="managers">
+                                            <a href="##">МЕНЕДЖМЕНТ</a>
                                             <a href="{% url 'projects:manager_create' object.pk %}">
                                                 <i class="fa fa-plus" aria-hidden="true"
                                                    style="color: #337ab7; font-size: 16px"></i>
                                             </a>
                                         </span>
+
+                                        <span class="post-title-inner" id="companies">
+                                            <a href="##">КОНТРАГЕНТЫ</a>
+                                            <a href="{% url 'projects:company_create' object.pk %}">
+                                                <i class="fa fa-plus" aria-hidden="true"
+                                                   style="color: #337ab7; font-size: 16px"></i>
+                                            </a>
+                                        </span>
+
+                                        <span class="post-title-inner" id="solutions">
+                                            <a href="##">ТЕХНОЛОГИИ</a>
+                                            <a href="{% url 'projects:product_create' object.pk %}">
+                                                <i class="fa fa-plus" aria-hidden="true"
+                                                   style="color: #337ab7; font-size: 16px"></i>
+                                            </a>
+                                        </span>
+
                                     <div class="wprt-lines style-1 custom-3">
                                         <div class="line-1"></div>
                                         <div class="line-2"></div>
                                     </div>
                                 </h2><!-- /.post-title -->
+{#  ------------------------------------- ПОЛУЧЕНИЕ МЕНЕДЖЕРОВ ПРОЕКТА -------------------------------------#}
+                            <div id="project_managers">
                                 {% for item in object.get_managers %}
-                                    <div class="post-meta style-2">
+                                    <div class="post-meta style-2" id="managers">
                                         <div class="post-meta-content">
                                             <div class="post-meta-content-inner">
                                     <span class="post-by-author item">
@@ -163,35 +182,10 @@
                                         </div>
                                     </div><!-- /.post-meta -->
                                 {% endfor %}
-
-                            </div><!-- /.post-content-wrap -->
-                        </article>
-                                    </div>
-                                </div>
-                        </div>
-                    </section>
+                            </div>
 
 {#  ------------------------------------- ПОЛУЧЕНИЕ КОНТРАГЕНТОВ ПРОЕКТА -------------------------------------#}
-                    <section class="wprt-section">
-                        <div class="container">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                    <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
-                        <article class="hentry">
-                            <div class="post-content-wrap">
-                                <h2 class="post-title">
-                                        <span class="post-title-inner">
-                                            КОНТРАГЕНТЫ
-                                            <a href="{% url 'projects:company_create' object.pk %}">
-                                                <i class="fa fa-plus" aria-hidden="true"
-                                                   style="color: #337ab7; font-size: 16px"></i>
-                                            </a>
-                                        </span>
-                                    <div class="wprt-lines style-1 custom-3">
-                                        <div class="line-1"></div>
-                                        <div class="line-2"></div>
-                                    </div>
-                                </h2><!-- /.post-title -->
+                            <div id="project_companies" style="display: none">
                                 {% for item in object.get_companies %}
                                     <div class="post-meta style-2">
                                         <div class="post-meta-content">
@@ -228,36 +222,11 @@
                                         </div>
                                     </div><!-- /.post-meta -->
                                 {% endfor %}
-
-                            </div><!-- /.post-content-wrap -->
-                        </article>
-                                    </div>
-                                </div>
-                        </div>
-                    </section>
+                            </div>
 
 {# ---------------------------------------------------- ТЕХНИЧЕСКИЕ РЕШЕНИЯ ----------------------------------------------------#}
-                        <section class="wprt-section">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
-                                        <article class="hentry">
-                                            <div class="post-content-wrap">
-                                                <h2 class="post-title">
-                                        <span class="post-title-inner">
-                                            ТЕХНОЛОГИИ
-                                            <a href="{% url 'projects:product_create' object.pk %}">
-                                                <i class="fa fa-plus" aria-hidden="true"
-                                                   style="color: #337ab7; font-size: 16px"></i>
-                                            </a>
-                                        </span>
-                                                    <div class="wprt-lines style-1 custom-3">
-                                                        <div class="line-1"></div>
-                                                        <div class="line-2"></div>
-                                                    </div>
-                                                </h2><!-- /.post-title -->
-                                                {% for item in object.get_products %}
+                            <div id="project_solutions" style="display: none">
+                                {% for item in object.get_products %}
                                                     <div class="post-meta style-2">
                                                         <div class="post-meta-content">
                                                             <div class="post-meta-content-inner">
@@ -308,29 +277,35 @@
                                                             </div>
                                                         </div>
                                                     </div><!-- /.post-meta -->
-                                                {% endfor %}
+                                {% endfor %}
+                            </div>
 
-                                            </div><!-- /.post-content-wrap -->
-                                        </article>
+
+                            </div><!-- /.post-content-wrap -->
+                        </article>
                                     </div>
                                 </div>
-                            </div>
-                        </section>
+                        </div>
+                    </section>
 
 {# ---------------------------------------------------- ВЫВЕДЕНИЕ КАРТЫ ----------------------------------------------------#}
 
-                        <section class="wprt-section">
+                        <section class="wprt-section custom_insert">
                             <div class="container">
                                 <div class='row'>
                                     {% if object.coordinate %}
                                         <div class="col-md-12">
                                             <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
 
-                                        <h2 class="line-height-normal margin-bottom-10">НА КАРТЕ</h2>
+                                        <h2 class="post-title">
+                                            <span class="post-title-inner">
+                                            НА КАРТЕ
+                                        </span>
                                         <div class="wprt-lines style-1 custom-3">
                                             <div class="line-1"></div>
                                             <div class="line-2"></div>
                                         </div>
+                                        </h2>
                                             <div class="wprt-spacer" data-desktop="25" data-mobi="15" data-smobi="15"></div>
                                             <div id="map"
                                                  style="margin: 0 auto; height:500px; background-color: #f8f8f8;"></div>
@@ -402,5 +377,30 @@
                 .add({{ object.map_mark }})
             {% endif %}
         });
+
+        let insert_menu = document.querySelectorAll('.post-title-inner');
+        console.log(insert_menu);
+        insert_menu.forEach(function (item) {
+            item.setAttribute('style', 'margin-right: 30px;');
+            item.addEventListener('click', function () {
+                switch (this.id) {
+                    case 'companies':
+                        document.getElementById('project_managers').setAttribute('style', 'display:none;');
+                        document.getElementById('project_companies').setAttribute('style', 'display:block;');
+                        document.getElementById('project_solutions').setAttribute('style', 'display:none;');
+                        break;
+                    case 'solutions':
+                        document.getElementById('project_managers').setAttribute('style', 'display:none;');
+                        document.getElementById('project_companies').setAttribute('style', 'display:none;');
+                        document.getElementById('project_solutions').setAttribute('style', 'display:block;');
+                        break;
+                    default:
+                        document.getElementById('project_managers').setAttribute('style', 'display:block;');
+                        document.getElementById('project_companies').setAttribute('style', 'display:none;');
+                        document.getElementById('project_solutions').setAttribute('style', 'display:none;');
+                        break
+                }
+            })
+        })
     </script>
 {% endblock %}
