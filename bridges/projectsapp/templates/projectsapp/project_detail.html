@@ -72,241 +72,247 @@
                                         <div><i>Статус проекта: {{ object.status | title }}</i></div>
                                         <div><i>Регион: {{ object.city }}. {{ object.description }}</i></div>
 
+                                        {#  ------------------------------------------- ПОЛУЧЕНИЕ АДРЕСА И/ИЛИ КООРДИНАТ -------------------------------------------#}
 
-{#  ------------------------------------------- ПОЛУЧЕНИЕ АДРЕСА И/ИЛИ КООРДИНАТ -------------------------------------------#}
-
-                                            {% if object.address or object.coordinate %}
-                                                <div class="wprt-spacer" data-desktop="15" data-mobi="15"
-                                                     data-smobi="15"></div>
-                                                {% if object.address %}
-                                                    <i>Адрес объекта: {{ object.address }}</i><br>
-                                                {% endif %}
-                                            {% else %}
-                                                <p style="color: red"><i>Точное местоположение объекта не указано</i>
-                                                </p>
+                                        {% if object.address or object.coordinate %}
+                                            <div class="wprt-spacer" data-desktop="15" data-mobi="15"
+                                                 data-smobi="15"></div>
+                                            {% if object.address %}
+                                                <i>Адрес объекта: {{ object.address }}</i><br>
                                             {% endif %}
-                                            </div>
-                                            </div>
-                                            </div>
-                                            </section>
-
-{#  ------------------------------------- МЕНЮ ПРОЕКТА -------------------------------------#}
-                    <section class="wprt-section custom_insert">
-                        <div class="container">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                    <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
-                        <article class="hentry">
-                            <div class="post-content-wrap">
-                                <h2 class="post-title">
-
-                                        <span class="post-title-inner" id="managers">
-                                            <a href="##">МЕНЕДЖМЕНТ</a>
-                                            <a href="{% url 'projects:manager_create' object.pk %}">
-                                                <i class="fa fa-plus" aria-hidden="true"
-                                                   style="color: #337ab7; font-size: 16px"></i>
-                                            </a>
-                                        </span>
-
-                                        <span class="post-title-inner" id="companies">
-                                            <a href="##">КОНТРАГЕНТЫ</a>
-                                            <a href="{% url 'projects:company_create' object.pk %}">
-                                                <i class="fa fa-plus" aria-hidden="true"
-                                                   style="color: #337ab7; font-size: 16px"></i>
-                                            </a>
-                                        </span>
-
-                                        <span class="post-title-inner" id="solutions">
-                                            <a href="##">ТЕХНОЛОГИИ</a>
-                                            <a href="{% url 'projects:product_create' object.pk %}">
-                                                <i class="fa fa-plus" aria-hidden="true"
-                                                   style="color: #337ab7; font-size: 16px"></i>
-                                            </a>
-                                        </span>
-
-                                    <div class="wprt-lines style-1 custom-3">
-                                        <div class="line-1"></div>
-                                        <div class="line-2"></div>
-                                    </div>
-                                </h2><!-- /.post-title -->
-{#  ------------------------------------- ПОЛУЧЕНИЕ МЕНЕДЖЕРОВ ПРОЕКТА -------------------------------------#}
-                            <div id="project_managers">
-                                {% for item in object.get_managers %}
-                                    <div class="post-meta style-2" id="managers">
-                                        <div class="post-meta-content">
-                                            <div class="post-meta-content-inner">
-                                    <span class="post-by-author item">
-                                        <strong>
-                                        <span class="inner">
-                                            <a href="{{ item.manager.get_absolute_url }}" title="" rel="author">
-                                                {{ item.manager }}
-                                            </a>
-                                        </span>
-                                        </strong>
-                                    </span>
-                                            {% if item.manager.get_company %}
-                                                {% for i in item.manager.get_company %}
-                                                <span class="post-date item">
-                                                    <span class="inner">
-                                                        <a href="{{ i.company.get_absolute_url }}" title="" rel="author">
-                                                            {{ i.company.form }} {{ i.company.name }}
-                                                        </a>
-                                                    </span>
-                                                </span>
-                                                {% endfor %}
-                                            {% endif %}
-                                                <span class="post-date item">
-                                        <span class="inner"><span
-                                                class="entry-date">{{ item.role }}</span></span>
-                                    </span>
-                                                <span class="post-date item">
-                                        <span class="inner"><span
-                                                class="entry-date">Назначен: {{ item.created|date:'d.m.Y' }}</span></span>
-                                    </span>
-                                                <span class="post-comment item">
-                                        <span class="inner">
-                                            <span class="entry-date">Последнее посещение: {{ item.manager.last_login }}</span>
-                                        </span>
-                                    </span>
-                                                {% if request.user.is_superuser %}
-                                                    <span class="post-date item">
-                                                    <span class="inner">
-                                                    <a href="{% url 'projects:manager_delete' object.pk item.pk %}">
-                                                        <i class="fa fa-ban" aria-hidden="true"
-                                                           style="color: red"></i>
-                                                    </a>
-                                                    </span>
-                                                </span>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div><!-- /.post-meta -->
-                                {% endfor %}
-                            </div>
-
-{#  ------------------------------------- ПОЛУЧЕНИЕ КОНТРАГЕНТОВ ПРОЕКТА -------------------------------------#}
-                            <div id="project_companies" style="display: none">
-                                {% for item in object.get_companies %}
-                                    <div class="post-meta style-2">
-                                        <div class="post-meta-content">
-                                            <div class="post-meta-content-inner">
-                                    <span class="post-by-author item">
-                                        <strong>
-                                        <span class="inner">
-                                            <a href="{{ item.company.get_absolute_url }}" title="" rel="author">
-                                                {{ item.company.form }} {{ item.company.name }}
-                                            </a>
-                                        </span>
-                                        </strong>
-                                    </span>
-                                                <span class="post-date item">
-                                                    <span class="inner">
-                                                            {{ item.role }}
-                                                    </span>
-                                                </span>
-                                                <span class="post-date item">
-                                        <span class="inner"><span
-                                                class="entry-date">Назначен: {{ item.created|date:'d.m.Y' }}</span></span>
-                                    </span>
-                                                {% if request.user.is_superuser %}
-                                                    <span class="post-date item">
-                                                    <span class="inner">
-                                                    <a href="{% url 'projects:company_delete' object.pk item.pk %}">
-                                                        <i class="fa fa-ban" aria-hidden="true"
-                                                           style="color: red"></i>
-                                                    </a>
-                                                    </span>
-                                                </span>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div><!-- /.post-meta -->
-                                {% endfor %}
-                            </div>
-
-{# ---------------------------------------------------- ТЕХНИЧЕСКИЕ РЕШЕНИЯ ----------------------------------------------------#}
-                            <div id="project_solutions" style="display: none">
-                                {% for item in object.get_products %}
-                                                    <div class="post-meta style-2">
-                                                        <div class="post-meta-content">
-                                                            <div class="post-meta-content-inner">
-                                    <span class="post-by-author item">
-                                        <strong>
-                                        <span class="inner">
-                                            <a href="{{ item.techsol.get_absolute_url }}" title="" rel="author">
-                                                {{ item.techsol.name }}
-                                            </a>
-                                        </span>
-                                        </strong>
-                                    </span>
-                                                                <span class="post-date item">
-                                                    <span class="inner">
-                                                        <a href="#" title=""
-                                                           rel="author">
-                                                            {{ item.value }} {{ item.techsol.measure }}
-                                                        </a>
-                                                    </span>
-                                                </span>
-                                                                <span class="post-date item">
-                                        <span class="inner"><span
-                                                class="entry-date">Назначен: {{ item.created|date:'d.m.Y' }}</span></span>
-                                    </span>
-                                                                <span class="post-date item">
-                                                    <span class="inner">
-                                                        <a href="#" title=""
-                                                           rel="author">
-                                                            Название конструкции или осей:
-                                                            {% if item.name %}
-                                                            {{ item.name }}
-                                                            {% else %}
-                                                            не указано
-                                                            {% endif %}
-                                                        </a>
-                                                    </span>
-                                                </span>
-                                                                {% if request.user.is_staff %}
-                                                                    <span class="post-date item">
-                                                    <span class="inner">
-                                                    <a href="{% url 'projects:product_delete' object.pk item.pk %}">
-                                                        <i class="fa fa-ban" aria-hidden="true"
-                                                           style="color: red"></i>
-                                                    </a>
-                                                    </span>
-                                                </span>
-                                                                {% endif %}
-                                                            </div>
-                                                        </div>
-                                                    </div><!-- /.post-meta -->
-                                {% endfor %}
-                            </div>
-
-
-                            </div><!-- /.post-content-wrap -->
-                        </article>
+                                        {% else %}
+                                            <p style="color: red"><i>Точное местоположение объекта не указано</i>
+                                            </p>
+                                        {% endif %}
                                     </div>
                                 </div>
-                        </div>
-                    </section>
+                            </div>
+                        </section>
+                        <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
+                        <section class="wprt-section">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="wprt-toggle active style-1">
+                                            <h3 class="toggle-title">МЕНЕДЖМЕНТ</h3>
+                                            <div class="toggle-content">
+                                                <div id="project_managers">
+                                                    <article class="hentry">
+                                                        {% for item in object.get_managers %}
+                                                            <div class="post-content-wrap">
+                                                                <div class="post-meta style-2" id="managers">
+                                                                    <div class="post-meta-content">
+                                                                        <div class="post-meta-content-inner">
+                                                                            <span class="post-by-author item">
+                                                                                <strong>
+                                                                                <span class="inner">
+                                                                                    <a href="{{ item.manager.get_absolute_url }}"
+                                                                                       title="" rel="author">
+                                                                                        {{ item.manager }}
+                                                                                    </a>
+                                                                                </span>
+                                                                                </strong>
+                                                                            </span>
+                                                                            {% if item.manager.get_company %}
+                                                                                {% for i in item.manager.get_company %}
+                                                                                    <span class="post-date item">
+                                                                                        <span class="inner">
+                                                                                            <a href="{{ i.company.get_absolute_url }}"
+                                                                                               title=""
+                                                                                               rel="author">
+                                                                                                {{ i.company.form }} {{ i.company.name }}
+                                                                                            </a>
+                                                                                        </span>
+                                                                                    </span>
+                                                                                {% endfor %}
+                                                                            {% endif %}
+                                                                            <span class="post-date item">
+                                                                                <span class="inner">
+                                                                                    <span class="entry-date">{{ item.role }}</span>
+                                                                                </span>
+                                                                            </span>
+                                                                            <span class="post-date item">
+                                                                                    <span class="inner">
+                                                                                        <span class="entry-date">Назначен: {{ item.created|date:'d.m.Y' }}
+                                                                                        </span>
+                                                                                    </span>
+                                                                                </span>
+                                                                            <span class="post-comment item">
+                                                                                <span class="inner">
+                                                                                    <span class="entry-date">Последнее посещение: {{ item.manager.last_login }}
+                                                                                    </span>
+                                                                                </span>
+                                                                            </span>
+                                                                            {% if request.user.is_superuser %}
+                                                                                <span class="post-date item">
+                                                                                    <span class="inner">
+                                                                                        <a href="{% url 'projects:manager_delete' object.pk item.pk %}">
+                                                                                            <i class="fa fa-ban"
+                                                                                               aria-hidden="true"
+                                                                                               style="color: red"></i>
+                                                                                        </a>
+                                                                                    </span>
+                                                                                </span>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+                                                                </div><!-- /.post-meta -->
+                                                            </div><!-- /.post-content-wrap -->
+                                                        {% endfor %}
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.col-md-12 -->
 
-{# ---------------------------------------------------- ВЫВЕДЕНИЕ КАРТЫ ----------------------------------------------------#}
+                                    <div class="col-md-12">
+                                        <div class="wprt-toggle style-1">
+                                            <h3 class="toggle-title">КОНТРАГЕНТЫ</h3>
+                                            <div class="toggle-content">
+                                                <div id="project_managers">
+                                                    <article class="hentry">
+                                                        {% for item in object.get_companies %}
+                                                            <div class="post-meta style-2">
+                                                                <div class="post-meta-content">
+                                                                    <div class="post-meta-content-inner">
+                                                                        <span class="post-by-author item">
+                                                                            <strong>
+                                                                            <span class="inner">
+                                                                                <a href="{{ item.company.get_absolute_url }}"
+                                                                                   title="" rel="author">
+                                                                                    {{ item.company.form }} {{ item.company.name }}
+                                                                                </a>
+                                                                            </span>
+                                                                            </strong>
+                                                                        </span>
+                                                                        <span class="post-date item">
+                                                                            <span class="inner">
+                                                                                    {{ item.role }}
+                                                                            </span>
+                                                                        </span>
+                                                                        <span class="post-date item">
+                                                                            <span class="inner">
+                                                                                <span class="entry-date">Назначен: {{ item.created|date:'d.m.Y' }}
+                                                                                </span>
+                                                                            </span>
+                                                                        </span>
+                                                                        {% if request.user.is_superuser %}
+                                                                            <span class="post-date item">
+                                                                                <span class="inner">
+                                                                                    <a href="{% url 'projects:company_delete' object.pk item.pk %}">
+                                                                                        <i class="fa fa-ban"
+                                                                                           aria-hidden="true"
+                                                                                           style="color: red"></i>
+                                                                                    </a>
+                                                                                </span>
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- /.post-meta -->
+                                                        {% endfor %}
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.col-md-12 -->
+
+                                    <div class="col-md-12">
+                                        <div class="wprt-toggle style-1">
+                                            <h3 class="toggle-title">ТЕХНОЛОГИИ</h3>
+                                            <div class="toggle-content">
+                                                <div id="project_managers">
+                                                    <article class="hentry">
+                                                        {% for item in object.get_products %}
+                                                            <div class="post-meta style-2">
+                                                                <div class="post-meta-content">
+                                                                    <div class="post-meta-content-inner">
+                                                                                        <span class="post-by-author item">
+                                                                                            <strong>
+                                                                                            <span class="inner">
+                                                                                                <a href="{{ item.techsol.get_absolute_url }}"
+                                                                                                   title=""
+                                                                                                   rel="author">
+                                                                                                    {{ item.techsol.name }}
+                                                                                                </a>
+                                                                                            </span>
+                                                                                            </strong>
+                                                                                        </span>
+                                                                        <span class="post-date item">
+                                                                                            <span class="inner">
+                                                                                                <a href="#" title=""
+                                                                                                   rel="author">
+                                                                                                    {{ item.value }} {{ item.techsol.measure }}
+                                                                                                </a>
+                                                                                            </span>
+                                                                                        </span>
+                                                                        <span class="post-date item">
+                                                                                            <span class="inner">
+                                                                                                <span class="entry-date">Назначен: {{ item.created|date:'d.m.Y' }}
+                                                                                                </span>
+                                                                                            </span>
+                                                                                        </span>
+                                                                        <span class="post-date item">
+                                                                                            <span class="inner">
+                                                                                                <a href="#" title=""
+                                                                                                   rel="author">
+                                                                                                    Название конструкции или осей:
+                                                                                                    {% if item.name %}
+                                                                                                        {{ item.name }}
+                                                                                                    {% else %}
+                                                                                                        не указано
+                                                                                                    {% endif %}
+                                                                                                </a>
+                                                                                            </span>
+                                                                                        </span>
+                                                                        {% if request.user.is_staff %}
+                                                                            <span class="post-date item">
+                                                                                                <span class="inner">
+                                                                                                    <a href="{% url 'projects:product_delete' object.pk item.pk %}">
+                                                                                                        <i class="fa fa-ban"
+                                                                                                           aria-hidden="true"
+                                                                                                           style="color: red"></i>
+                                                                                                    </a>
+                                                                                                </span>
+                                                                                            </span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- /.post-meta -->
+                                                        {% endfor %}
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.col-md-12 -->
+
+
+                                </div> <!-- /.row -->
+                            </div><!-- /.container -->
+                        </section>
+
+
+                        {# ---------------------------------------------------- ВЫВЕДЕНИЕ КАРТЫ ----------------------------------------------------#}
 
                         <section class="wprt-section custom_insert">
                             <div class="container">
                                 <div class='row'>
                                     {% if object.coordinate %}
                                         <div class="col-md-12">
-                                            <div class="wprt-spacer" data-desktop="20" data-mobi="10" data-smobi="10"></div>
+                                            <div class="wprt-spacer" data-desktop="20" data-mobi="10"
+                                                 data-smobi="10"></div>
 
-                                        <h2 class="post-title">
+                                            <h2 class="post-title">
                                             <span class="post-title-inner">
                                             НА КАРТЕ
                                         </span>
-                                        <div class="wprt-lines style-1 custom-3">
-                                            <div class="line-1"></div>
-                                            <div class="line-2"></div>
-                                        </div>
-                                        </h2>
-                                            <div class="wprt-spacer" data-desktop="25" data-mobi="15" data-smobi="15"></div>
+                                                <div class="wprt-lines style-1 custom-3">
+                                                    <div class="line-1"></div>
+                                                    <div class="line-2"></div>
+                                                </div>
+                                            </h2>
+                                            <div class="wprt-spacer" data-desktop="25" data-mobi="15"
+                                                 data-smobi="15"></div>
                                             <div id="map"
                                                  style="margin: 0 auto; height:500px; background-color: #f8f8f8;"></div>
                                             {#                                        <div class="wprt-spacer" data-desktop="50" data-mobi="40"#}
@@ -314,7 +320,7 @@
                                         </div><!-- /.col-md-12 -->
                                     {% endif %}
                                 </div><!-- /.row -->
-                                </div><!-- /.container -->
+                            </div><!-- /.container -->
                         </section>
                         <div class="col-md-12">
                             <div class="wprt-spacer" data-desktop="70" data-mobi="60"
@@ -348,9 +354,10 @@
                 // Создаём макет содержимого.
                 MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
                     '<div style="color: #FFFFFF; font-weight: bold;">$[properties.iconContent]</div>'
-                ),
+                    ),
                 myPlacemark = new ymaps.Placemark([-83.795352, -171.237534], {}, {
-                iconLayout: 'default#imageWithContent',iconImageHref: 'none',})
+                    iconLayout: 'default#imageWithContent', iconImageHref: 'none',
+                })
 
                     {% if object.coordinate %}
                         {{ object.map_mark }} = new ymaps.Placemark([{{ object.coordinate }}], {
@@ -373,34 +380,9 @@
 
             myMap.geoObjects
                 .add(myPlacemark)
-            {% if object.coordinate %}
-                .add({{ object.map_mark }})
-            {% endif %}
+                {% if object.coordinate %}
+                    .add({{ object.map_mark }})
+                {% endif %}
         });
-
-        let insert_menu = document.querySelectorAll('.post-title-inner');
-        console.log(insert_menu);
-        insert_menu.forEach(function (item) {
-            item.setAttribute('style', 'margin-right: 30px;');
-            item.addEventListener('click', function () {
-                switch (this.id) {
-                    case 'companies':
-                        document.getElementById('project_managers').setAttribute('style', 'display:none;');
-                        document.getElementById('project_companies').setAttribute('style', 'display:block;');
-                        document.getElementById('project_solutions').setAttribute('style', 'display:none;');
-                        break;
-                    case 'solutions':
-                        document.getElementById('project_managers').setAttribute('style', 'display:none;');
-                        document.getElementById('project_companies').setAttribute('style', 'display:none;');
-                        document.getElementById('project_solutions').setAttribute('style', 'display:block;');
-                        break;
-                    default:
-                        document.getElementById('project_managers').setAttribute('style', 'display:block;');
-                        document.getElementById('project_companies').setAttribute('style', 'display:none;');
-                        document.getElementById('project_solutions').setAttribute('style', 'display:none;');
-                        break
-                }
-            })
-        })
     </script>
 {% endblock %}
