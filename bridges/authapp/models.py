@@ -99,6 +99,7 @@ class Users(AbstractUser):
     phone = models.CharField(verbose_name='Телефон*', max_length=50, default='не указан')
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+    social_media_image = models.ImageField(upload_to='users_avatars', blank=True)
 
     class Meta(AbstractUser.Meta):
         verbose_name = "Пользователь"

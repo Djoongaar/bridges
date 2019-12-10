@@ -21,7 +21,7 @@ def get_inactive_users(request):
 
 @login_required
 def restricted_area(request):
-    user = request.user
+    user = get_object_or_404(Users, pk=request.user.pk)
     user_companies = CompanyUsers.objects.filter(user_id=user.pk, works=True)
     user_projects = ProjectManagers.objects.filter(manager_id=user.pk).order_by('-project__updated')
     user_orders = Order.objects.filter(user_id=user.pk)
@@ -45,7 +45,8 @@ def restricted_area(request):
         'user_orders': user_orders,
         'inactive_users': get_inactive_users(request),
         'partners': partners,
-        'users': users
+        'users': users,
+        'user': user
     }
     return render(request, 'authapp/restricted_area.html', context)
 

@@ -37,8 +37,11 @@
                                      data-column4="1" data-gaph="30" data-gapv="30" style="height: 270px;">
                                     <div class="cbp-item">
                                         <div class="item-wrap">
+                                            {% if user.social_media_image %}
+                                            <img style="height: 260px" src="{{ user.social_media_image }}" alt="image"/>
+                                            {% else %}
                                             <img style="height: 260px" src="/media/{{ user.avatar|default:'users/avatar/no_avatar.png' }}" alt="image"/>
-                                        </div>
+                                            {% endif %}                                        </div>
                                     </div><!--/.cbp-item -->
                                 </div>
                                 <a class="wprt-button small" href="{% url 'profile_self_user_update' user.pk %}">
@@ -60,8 +63,6 @@
 
                                 <div class="wprt-spacer" data-desktop="25" data-mobi="25" data-smobi="25"></div>
 
-                                <p class="margin-bottom-25">{{ user.description }}</p>
-
                                 <ul class="wprt-list style-1 accent-color">
                                     {% for company in user_companies %}
                                         <li>Место работы: {{ company.company.form }} {{ company.company.name }}</li>
@@ -71,7 +72,9 @@
 {#                                    <li>Последнее посещение: {{ user.updated }}</li>#}
                                     <li>Дата рождения: {{ user.birthday|date:"d.m.Y" }}</li>
                                     <li>Телефон (моб): <a href="tel:{{ user.phone }}">{{ user.phone }}</a></li>
+                                    <li>Пол: {{ user.gender }}</li>
                                     <li>Эл. почта: <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+                                    <li>Подробно о себе: {{ user.description }}</li>
                                 </ul>
                             </div><!-- /.col-md-6 -->
                         </div><!-- /.row -->
