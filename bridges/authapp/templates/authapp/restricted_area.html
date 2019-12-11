@@ -38,10 +38,10 @@
                                     <div class="cbp-item">
                                         <div class="item-wrap">
                                             {% if user.social_media_image %}
-                                            <img style="height: 260px" src="{{ user.social_media_image }}" alt="image"/>
+                                            <img style="height: 260px" src="/media/{{ user.social_media_image }}" alt="image"/>
                                             {% else %}
                                             <img style="height: 260px" src="/media/{{ user.avatar|default:'users/avatar/no_avatar.png' }}" alt="image"/>
-                                            {% endif %}                                        </div>
+                                            {% endif %}     `                                   </div>
                                     </div><!--/.cbp-item -->
                                 </div>
                                 <a class="wprt-button small" href="{% url 'profile_self_user_update' user.pk %}">
@@ -85,9 +85,9 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="wprt-toggle active style-1">
+                                        <div class="wprt-toggle style-1">
                                             <h3 class="toggle-title">МОИ ПРОЕКТЫ</h3>
-                                            <div class="toggle-content">
+                                            <div class="toggle-content" style="color: black;">
                                                 <div id="project_managers">
                                                     <article class="hentry">
                                                         {% if user_projects %}

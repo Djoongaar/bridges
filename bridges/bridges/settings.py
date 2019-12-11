@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'researchapp',
     'partnersapp',
     'ordersapp',
-    # 'newsapp',
+    'newsapp',
     'imagekit',
     'guardian',
     'allauth',
