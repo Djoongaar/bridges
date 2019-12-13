@@ -74,8 +74,8 @@
                                         <li class="comment">
                                             <article class="comment-wrap clearfix">
                                                 <div class="gravatar">
-                                                    {% if user.avatar %}
-                                                        <img src="{{ user.avatar }}" alt="image"/>
+                                                    {% if comment.user.avatar %}
+                                                        <img src="{{ comment.user.avatar }}" alt="image"/>
                                                     {% else %}
                                                         <img src="/media/users/avatar/no_avatar.png" alt="image"/>
                                                     {% endif %}
