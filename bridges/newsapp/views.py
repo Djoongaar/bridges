@@ -81,7 +81,7 @@ class NewsDeleteView(PermissionRequiredMixin, DeleteView):
     extra_context = {}
 
 
-# class NewsDiscussItemUpdateView(UpdateView):
+# class NewsCommentCreate(UpdateView):
 #     model = News
 #     fields = []
 #     template_name = 'newsapp/newsdiscussitem_form.html'
@@ -111,7 +111,7 @@ class NewsDeleteView(PermissionRequiredMixin, DeleteView):
 
 # ==================   В этом классе выходит ошибка Integrity Error ======================
 
-class NewsDiscussItemUpdateView(View):
+class NewsCommentCreate(View):
     form_model = NewsDiscussItem
     template = 'newsapp/newsdiscussitem_form.html'
     form = NewsDiscussItemForm

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from newsapp.views import NewsListView, NewsDetailView, NewsUpdateView, NewsCreateView, NewsDeleteView, \
-    NewsDiscussItemUpdateView
+    NewsCommentCreate
 
 app_name = 'newsapp'
 
@@ -11,5 +11,5 @@ urlpatterns = [
     path('update/<int:pk>', NewsUpdateView.as_view(), name='news_update'),
     path('create', NewsCreateView.as_view(), name='news_create'),
     path('delete/<int:pk>', NewsDeleteView.as_view(), name='news_delete'),
-    path('create_comment/<int:news_pk>', NewsDiscussItemUpdateView.as_view(), name='comment_update')
+    path('create_comment/<int:news_pk>', NewsCommentCreate.as_view(), name='comment_create')
 ]
