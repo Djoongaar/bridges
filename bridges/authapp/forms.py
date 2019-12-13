@@ -39,7 +39,6 @@ class UsersSelfEditProfileForm(forms.ModelForm):
     class Meta:
         model = Users
         fields = [
-            'avatar',
             'description',
             'birthday',
             'email',

@@ -38,9 +38,7 @@
                                     <div class="cbp-item">
                                         <div class="item-wrap">
                                             {% if user.avatar %}
-                                                <img style="height: 260px" src="/media/{{ user.avatar }}" alt="image"/>
-                                            {% elif user.social_media_image %}
-                                                <img style="height: 260px" src="{{ user.social_media_image }}" alt="image"/>
+                                                <img style="height: 260px" src="{{ user.avatar }}" alt="image"/>
                                             {% else %}
                                                 <img style="height: 260px" src="/media/users/avatar/no_avatar.png" alt="image"/>
                                             {% endif %}
