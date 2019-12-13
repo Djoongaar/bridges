@@ -1,0 +1,24 @@
+{% extends 'productsapp/base.html' %}
+{% load static %}
+{% block content-container %}
+    <div class="container">
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" value="добавить" class="wprt-button icon-flash confirm-button">
+                СОХРАНИТЬ
+            </button>
+            <a href="{{ news.get_absolute_url }}" class="wprt-button small cancel-button">
+                ВЕРНУТЬСЯ
+            </a>
+        </form>
+    </div>
+    <script>
+        let inputForm = document.querySelectorAll('form p');
+        for (let i = 0; i < inputForm.length - 1; i++) {
+            inputForm[i].style.display = 'none';
+        }
+        console.log(inputForm);
+    </script>
+{% endblock %}

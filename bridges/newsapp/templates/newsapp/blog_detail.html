@@ -2,24 +2,6 @@
 {% load static %}
 {% block content-container %}
     <!-- Featured Title -->
-    <div id="featured-title" class="clearfix featured-title-left">
-        <div id="featured-title-inner" class="container clearfix">
-            <div class="featured-title-inner-wrap">
-                <div class="featured-title-heading-wrap">
-                    <h1 class="featured-title-heading">News</h1>
-                </div>
-                <div id="breadcrumbs">
-                    <div class="breadcrumbs-inner">
-                        <div class="breadcrumb-trail">
-                            <a href="#" title="Construction" rel="home" class="trail-begin">Home</a>
-                            <span class="sep">/</span>
-                            <span class="trail-end">News</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Main Content -->
     <div id="main-content" class="site-main clearfix">
         <div id="content-wrap" class="container" style="display:flex;">
@@ -33,15 +15,23 @@
 
                             <h2 class="post-title">
                                 <span class="post-title-inner">
-                                    <a href="#">{{ object.name }}</a>
+                                    <a href="##">{{ object.name }}</a>
                                 </span>
+                                {% if request.user.is_staff %}
+                                    <a href="{% url 'news:news_update' object.pk %}">
+                                        <i class="fa fa-pencil" aria-hidden="true"
+                                           style="color: black;font-size: small;"> </i>
+                                    </a>
+                                    <a href="{% url 'news:news_delete' object.pk %}">
+                                        <i class="fa fa-ban" aria-hidden="true" style="color: red; font-size: small;"></i>
+                                    </a>
+                                {% endif %}
                             </h2><!-- /.post-title -->
-
                             <div class="post-meta style-2">
                                 <div class="post-meta-content">
                                     <div class="post-meta-content-inner">
                                         <span class="post-by-author item">
-                                            <span class="inner">By <a href="#" title="" rel="author">Construction</a></span>
+                                            <span class="inner">Автор: <a href="{{ object.author.get_absolute_url }}" title="" rel="author">{{ object.author }}</a></span>
                                         </span>
 
                                         <span class="post-date item">
@@ -49,18 +39,11 @@
                                         </span>
 
                                         <span class="post-comment item">
-                                            <span class="inner"><a href="#">{{ commentsLen }} Comments</a></span>
+                                            <span class="inner"><a href="#">{{ object.get_count_comments }} коммент.</a></span>
                                         </span>
-                                        {% comment %}
-                                        <span class="post-meta-categories item">
-                                            <span class="inner">
-                                                <a href="#" rel="category">Building</a>,
-                                                <a href="#" rel="category">Construction</a>,
-                                                <a href="#" rel="category">Architecture</a>,
-                                                <a href="#" rel="category">Green House</a>
-                                            </span>
+                                        <span class="post-comment item">
+                                            <span class="inner"><a href="#">статус: {{ object.status }}</a></span>
                                         </span>
-                                        {% endcomment %}
                                     </div>
                                 </div>
                             </div><!-- /.post-meta -->
@@ -80,23 +63,22 @@
 
                             <div class="post-tags clearfix">
                                 Tags:
-                                <a href="#" rel="tag">Architectural</a>
-                                <a href="#" rel="tag">Builder</a>
-                                <a href="#" rel="tag">construction</a>
+                                {% for obj in object.get_products %}
+                                <a href="{{ obj.techsol.get_absolute_url }}" rel="tag" style="background-color: grey;">{{ obj.techsol }}</a>
+                                {% endfor %}
                             </div><!-- /.post-tags -->
 
                             <div id="comments" class="comments-area">
-                                <h2 class="comments-title">{{ commentsLen }} Comments</h2>
                                 <ol class="comment-list">
-                                    {% for comment in comments %}
+                                    {% for comment in object.get_comments %}
                                         <li class="comment">
                                             <article class="comment-wrap clearfix">
-                                                <div class="gravatar"><img alt="image" src="/media/{{ comment.user.image }}" /></div>
+                                                <div class="gravatar"><img alt="image" src="{{ comment.user.social_media_image }}" /></div>
                                                 <div class="comment-content">
                                                     <div class="comment-meta">
                                                         <h6 class="comment-author"> {{ comment.user }} </h6>
                                                         <span class="comment-time">{{ comment.creation_date }}</span>
-                                                        <span class="comment-reply"><a class="comment-reply-link" href="#">Reply</a></span>
+{#                                                        <span class="comment-reply"><a class="comment-reply-link" href="#">Reply</a></span>#}
                                                     </div>
                                                     <div class="comment-text">
                                                         <p>{{ comment.comment }}</p>
@@ -105,77 +87,10 @@
                                             </article>
                                         </li><!-- #comment-## -->
                                     {% endfor %}
-                                    {% comment %}
-                                    <li class="comment">
-                                        <article class="comment-wrap clearfix">
-                                            <div class="gravatar"><img alt="image" src="assets/img/avatar.png" /></div>
-                                            <div class="comment-content">
-                                                <div class="comment-meta">
-                                                    <h6 class="comment-author">BlogWP</h6>
-                                                    <span class="comment-time">12/30/2016</span>
-                                                    <span class="comment-reply"><a class="comment-reply-link" href="#">Reply</a></span>
-                                                </div>
-                                                <div class="comment-text">
-                                                    <p>Cras diam dolor, ultricies a feugiat ullamcorper, porttitor eu dolor. Curabitur viverra sem sed facilisis ullamcorper. Quisque quam dui, fringilla sed ex eleifend, laoreet lacinia metus. Donec vehicula nisi id finibus interdum. Nulla facilisi. Morbi sed cursus erat.</p>
-                                                </div>
-                                            </div>
-                                        </article>
-                                        <ul class="children">
-                                            <li class="comment">
-                                                <article class="comment-wrap clearfix">
-                                                    <div class="gravatar"><img alt="image" src="assets/img/avatar.png" /></div>
-                                                    <div class="comment-content">
-                                                        <div class="comment-meta">
-                                                            <h6 class="comment-author">BlogWP</h6>
-                                                            <span class="comment-time">12/30/2016</span>
-                                                            <span class="comment-reply"><a class="comment-reply-link" href="#">Reply</a></span>
-                                                        </div>
-                                                        <div class="comment-text">
-                                                            <p>Cras diam dolor, ultricies a feugiat ullamcorper, porttitor eu dolor. Curabitur viverra sem sed facilisis ullamcorper. Quisque quam dui, fringilla sed ex eleifend, laoreet lacinia metus. Donec vehicula nisi id finibus interdum. Nulla facilisi. Morbi sed cursus erat.</p>
-                                                        </div>
-                                                    </div>
-                                                </article>
-                                            </li><!-- #comment-## -->
-                                        </ul><!-- .children -->
-                                    </li><!-- #comment-## -->
-                                
-                                    <li class="comment">
-                                        <article class="comment-wrap clearfix">
-                                            <div class="gravatar"><img alt="image" src="assets/img/avatar.png" /></div>
-                                            <div class="comment-content">
-                                                <div class="comment-meta">
-                                                    <h6 class="comment-author">BlogWP</h6>
-                                                    <span class="comment-time">12/30/2016</span>
-                                                    <span class="comment-reply"><a class="comment-reply-link" href="#">Reply</a></span>
-                                                </div>
-                                                <div class="comment-text">
-                                                    <p>Cras diam dolor, ultricies a feugiat ullamcorper, porttitor eu dolor. Curabitur viverra sem sed facilisis ullamcorper. Quisque quam dui, fringilla sed ex eleifend, laoreet lacinia metus. Donec vehicula nisi id finibus interdum. Nulla facilisi. Morbi sed cursus erat.</p>
-                                                </div>
-                                            </div>
-                                        </article>
-                                    </li><!-- #comment-## -->
-                                    {% endcomment %}
                                 </ol><!-- /.comment-list -->
-                                    
-                                <div id="respond" class="comment-respond">
-                                    <h3 id="reply-title" class="comment-reply-title">Leave a Reply</h3>
-                                    <form action="#" method="post" id="commentform" class="comment-form">
-                                        <fieldset class="message-wrap">
-                                            <textarea id="comment-message" name="comment" rows="8" tabindex="4" placeholder="Message"></textarea>
-                                        </fieldset>
-                                        <fieldset class="name-wrap">
-                                            <input type="text" id="author" class="tb-my-input" name="author" tabindex="1" placeholder="Name" value="" size="32" aria-required="true">
-                                        </fieldset>
-                                        <fieldset class="email-wrap">
-                                            <input type="text" id="email" class="tb-my-input" name="email" tabindex="2" placeholder="E-mail" value="" size="32" aria-required="true">
-                                        </fieldset>
-                                        <p class="form-submit">
-                                            <input name="submit" type="submit" id="comment-reply" class="submit" value="Post Comment">
-                                            <input type="hidden" name="comment_post_ID" value="100" id="comment_post_ID">
-                                            <input type="hidden" name="comment_parent" id="comment_parent" value="0">
-                                        </p>
-                                    </form>
-                                </div><!-- #respond -->
+                                <a href="{% url 'newsapp:comment_update' object.pk %}" class="wprt-button small">
+                                    ПРОКОММЕНТИРОВАТЬ
+                                </a>
                             </div><!--/#comments -->
                         </article>
                     </div><!-- /.post-content-single-wrap -->
@@ -195,13 +110,6 @@
                         <h2 class="widget-title"><span>CATEGORIES</span></h2>
                         <ul>
                             {% include 'newsapp/includes/inc_filter.html' %}
-                            {% comment %}
-                            <li class="cat-item cat-item-3"><a href="#">Building</a> (2)</li>
-                            <li class="cat-item cat-item-6"><a href="#">Ecobuilding</a> (4)</li>
-                            <li class="cat-item cat-item-4"><a href="#">House</a> (4)</li>
-                            <li class="cat-item cat-item-5"><a href="#">Office</a> (1)</li>
-                            <li class="cat-item cat-item-10"><a href="#">Tower</a> (3)</li>
-                            {% endcomment %}
                         </ul>
                     </div>
 
@@ -220,40 +128,6 @@
                                     </div><!-- /.texts -->
                                 </li>
                             {% endfor %}
-                            {% comment %}
-                            <li class="clearfix">
-                                <div class="thumb">
-                                    <img width="150" height="150" src="assets/img/news/1s.jpg" alt="image">
-                                </div><!-- /.thumb -->
-
-                                <div class="texts">
-                                    <h3><a href="#">Best Treehouse Plans</a></h3>
-                                    <span class="post-date"><span class="entry-date">December 30, 2016</span></span>
-                                </div><!-- /.texts -->
-                            </li>
-
-                            <li class="clearfix">
-                                <div class="thumb">
-                                    <img width="150" height="150" src="assets/img/news/2s.jpg" alt="image">
-                                </div><!-- /.thumb -->
-
-                                <div class="texts">
-                                    <h3><a href="#">The Future of Buildings</a></h3>
-                                    <span class="post-date"><span class="entry-date">December 30, 2016</span></span>
-                                </div><!-- /.texts -->
-                            </li>
-
-                            <li class="clearfix">
-                                <div class="thumb">
-                                    <img width="150" height="150" src="assets/img/news/3s.jpg" alt="image">
-                                </div><!-- /.thumb -->
-
-                                <div class="texts">
-                                    <h3><a href="#">Best Treehouse Plans</a></h3>
-                                    <span class="post-date"><span class="entry-date">December 30, 2016</span></span>
-                                </div><!-- /.texts -->
-                            </li>
-                            {% endcomment %}
                         </ul>
                     </div>
 
@@ -261,13 +135,6 @@
                         <h2 class="widget-title"><span>TAGS CLOUD</span></h2>
                         <div class="tagcloud">
                             {% include 'newsapp/includes/inc_afilter.html' %}
-                            {% comment %}
-                            <a href="#">Buildings</a>
-                            <a href="#">Architectural</a>
-                            <a href="#">Interior</a>
-                            <a href="#">Construction</a>
-                            <a href="#">Smart House</a>
-                            {% endcomment %}
                         </div>
                     </div>
                 </div><!-- /#inner-sidebar -->

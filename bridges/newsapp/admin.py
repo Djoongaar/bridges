@@ -3,16 +3,14 @@
 from django.contrib import admin
 from .models import *
 
-class NewsHasTechnicalSolutionsInline(admin.TabularInline):
-    model = NewsHasTechnicalSolutions
+
+class NewsProductInline(admin.TabularInline):
+    model = NewsProduct
     extra = 0
+
 
 class NewsDiscussItemInline(admin.TabularInline):
     model = NewsDiscussItem
-    extra = 0
-
-class NewsDiscussMemberInline(admin.TabularInline):
-    model = NewsDiscussMember
     extra = 0
 
 
@@ -23,7 +21,6 @@ class NewsAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     search_fields = ('name',)
     inlines = [
-        NewsHasTechnicalSolutionsInline,
+        NewsProductInline,
         NewsDiscussItemInline,
-        NewsDiscussMemberInline
     ]
