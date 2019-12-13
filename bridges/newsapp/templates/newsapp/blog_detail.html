@@ -73,7 +73,13 @@
                                     {% for comment in object.get_comments %}
                                         <li class="comment">
                                             <article class="comment-wrap clearfix">
-                                                <div class="gravatar"><img alt="image" src="{{ comment.user.social_media_image }}" /></div>
+                                                <div class="gravatar">
+                                                    {% if user.avatar %}
+                                                        <img src="{{ user.avatar }}" alt="image"/>
+                                                    {% else %}
+                                                        <img src="/media/users/avatar/no_avatar.png" alt="image"/>
+                                                    {% endif %}
+                                                </div>
                                                 <div class="comment-content">
                                                     <div class="comment-meta">
                                                         <h6 class="comment-author"> {{ comment.user }} </h6>
