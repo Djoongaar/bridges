@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from guardian.decorators import permission_required, permission_required_or_403
 from guardian.shortcuts import assign_perm
 
+from newsapp.models import News
 from ordersapp.models import Order
 from django.views.generic import View, CreateView
 from .forms import *
@@ -25,6 +26,7 @@ def restricted_area(request):
     user_companies = CompanyUsers.objects.filter(user_id=user.pk, works=True)
     user_projects = ProjectManagers.objects.filter(manager_id=user.pk).order_by('-project__updated')
     user_orders = Order.objects.filter(user_id=user.pk)
+    my_news = News.objects.filter(author_id=request.user.pk)
     if user.is_superuser:
         partners = Company.objects.all().order_by('name')
         users = Users.objects.all().order_by('last_name')
@@ -45,6 +47,7 @@ def restricted_area(request):
         'user_orders': user_orders,
         'inactive_users': get_inactive_users(request),
         'partners': partners,
+        'my_news': my_news,
         'users': users,
         'user': user
     }

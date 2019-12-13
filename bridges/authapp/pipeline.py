@@ -34,7 +34,7 @@ def save_user_profile(backend, user, response, *args, **kwargs):
             user.birthday = bdate
         if data['sex'] and not user.gender:
             user.gender = 'муж' if data['sex'] == 2 else 'жен'
-        if data['photo_200'] and not user.social_media_image:
-            user.social_media_image = data['photo_200']
+        if data['photo_200'] and not user.avatar:
+            user.avatar = data['photo_200']
         user.save()
     return
