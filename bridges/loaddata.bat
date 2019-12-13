@@ -5,4 +5,5 @@ python manage.py loaddata servicesapp_db.json
 python manage.py loaddata productsapp_db.json
 python manage.py loaddata projectsapp_db.json
 python manage.py loaddata researchapp_db.json
+python manage.py loaddata newsapp_db.json
 pause
