@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.decorators import login_required
 from django.db import transaction, IntegrityError
 from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic.base import View
 
 from authapp.models import Users
@@ -111,7 +112,8 @@ class NewsDeleteView(PermissionRequiredMixin, DeleteView):
 
 # ==================   В этом классе выходит ошибка Integrity Error ======================
 
-class NewsCommentCreate(View):
+class NewsCommentCreate(LoginRequiredMixin, View):
+    login_url = '/auth/account/login/'
     form_model = NewsDiscussItem
     template = 'newsapp/newsdiscussitem_form.html'
     form = NewsDiscussItemForm
