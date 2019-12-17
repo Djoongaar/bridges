@@ -98,15 +98,19 @@ def project_update(request, pk):
 class ProjectsSolutionsCreateView(CreateMixin, View):
     form_model = ProjectHasTechnicalSolutions
     form = ProjectSolutionsCreateForm
-    template = 'projectsapp/projectsolutions_form.html'
+    template = 'projectsapp/projectitems_form.html'
     FormSet = modelformset_factory(form_model, fields='__all__')
     variable = 'techsol'
     viriable_model = TechnicalSolutions
+    page_title = 'Добавление технического решения'
+    bred_title = 'Техническое решение'
 
 
 class ProjectsSolutionsDeleteView(DeleteMixin, View):
     form_model = ProjectHasTechnicalSolutions
-    template = 'projectsapp/projectmanagers_confirm_delete.html'
+    template = 'projectsapp/projectitems_confirm_delete.html'
+    page_title = 'Удаление технического решения'
+    bred_title = 'Техническое решение'
 
 
 #  ------------------------------------ PROJECT'S COMPANIES CruD ----------------------------------------------
@@ -115,15 +119,19 @@ class ProjectsSolutionsDeleteView(DeleteMixin, View):
 class ProjectsCompanyCreateView(CreateMixin, View):
     form_model = ProjectCompany
     form = ProjectCompanyCreateForm
-    template = 'projectsapp/projectcompany_form.html'
+    template = 'projectsapp/projectitems_form.html'
     FormSet = modelformset_factory(form_model, fields='__all__')
     variable = 'company'
     viriable_model = Company
+    page_title = 'Добавление контрагента проекта'
+    bred_title = 'Контрагент проекта'
 
 
 class ProjectsCompanyDeleteView(DeleteMixin, View):
     form_model = ProjectCompany
-    template = 'projectsapp/projectmanagers_confirm_delete.html'
+    template = 'projectsapp/projectitems_confirm_delete.html'
+    page_title = 'Удаление контрагента проекта'
+    bred_title = 'Контрагент проекта'
 
 
 #  ------------------------------------ PROJECT'S MANAGERS CruD ----------------------------------------------
@@ -131,15 +139,19 @@ class ProjectsCompanyDeleteView(DeleteMixin, View):
 class ProjectsManagerCreateView(CreateMixin, View):
     form_model = ProjectManagers
     form = ProjectManagerCreateForm
-    template = 'projectsapp/projectmanagers_form.html'
+    template = 'projectsapp/projectitems_form.html'
     FormSet = modelformset_factory(form_model, fields='__all__')
     variable = 'manager'
     viriable_model = Users
+    page_title = 'Добавление участника проекта'
+    bred_title = 'Участник проекта'
 
 
 class ProjectsManagerDeleteView(DeleteMixin, View):
     form_model = ProjectManagers
-    template = 'projectsapp/projectmanagers_confirm_delete.html'
+    template = 'projectsapp/projectitems_confirm_delete.html'
+    page_title = 'Удаление участника проекта'
+    bred_title = 'Участник проекта'
 
 
 #  ------------------------------------ PROJECT'S GALLERY crUd----------------------------------------------

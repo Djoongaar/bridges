@@ -28,14 +28,21 @@ class CreateMixin:
     template = None
     variable = None
     viriable_model = None
+    page_title = None
+    bred_title = None
 
     def get(self, request, project_pk):
         project = Project.objects.get(pk=project_pk)
         if request.user.has_perm('change_project', project):
-            form = self.form(initial={"project": project})
+            form = self.form(initial={
+                'project': project,
+                f'{self.variable}': self.variable
+            })
             context = {
                 'form': form,
-                'project': project
+                'project': project,
+                'page_title': self.page_title,
+                'bred_title': self.bred_title
             }
             return render(request, template_name=self.template, context=context)
         else:
@@ -45,15 +52,9 @@ class CreateMixin:
         project = Project.objects.get(pk=project_pk)
         form = self.form(request.POST)
         if form.is_valid():
-            hacked = {
-                "project": Project.objects.get(pk=form.data["project"]),
-                self.variable: self.viriable_model.objects.get(pk=form.data[self.variable])
-            }
-            data = {**form.data, **hacked}
-            data = {k: v[0] if isinstance(v, list) else v for k, v in data.items() if
-                    k in {f.name for f in self.form_model._meta.fields}}
-            data['is_active'] = True if data['is_active'] == 'on' else False
-            obj = self.form_model(**data)
+            obj = form.save(commit=False)
+            obj.project = project
+            obj.variable = self.variable
             obj.save()
             return HttpResponseRedirect(project.get_absolute_url())
         return HttpResponse(status=400)
@@ -62,6 +63,8 @@ class CreateMixin:
 class DeleteMixin:
     form_model = None
     template = None
+    page_title = None
+    bred_title = None
 
     def get(self, request, project_pk, pk):
         project = Project.objects.get(pk=project_pk)
@@ -69,7 +72,9 @@ class DeleteMixin:
             obj = get_object_or_404(self.form_model, pk=pk)
             context = {
                 'obj': obj,
-                'project': project
+                'project': project,
+                'page_title': self.page_title,
+                'bred_title': self.bred_title
             }
             return render(request, self.template, context=context)
         else:

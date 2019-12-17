@@ -134,6 +134,9 @@ class ProjectHasTechnicalSolutions(models.Model):
         verbose_name = 'Тех решение проекта'
         verbose_name_plural = 'Тех решения проекта'
 
+    def __str__(self):
+        return self.techsol.name
+
 
 # СВЯЗАНО
 class ProjectCompany(models.Model):
@@ -168,6 +171,9 @@ class ProjectCompany(models.Model):
     class Meta:
         verbose_name = 'Компания - участник проекта'
         verbose_name_plural = 'Компания - участник проекта'
+
+    def __str__(self):
+        return self.company.name
 
 
 # СВЯЗАНО
@@ -209,6 +215,9 @@ class ProjectManagers(models.Model):
     class Meta:
         verbose_name = 'Участник проекта'
         verbose_name_plural = 'Участники проекта'
+
+    def __str__(self):
+        return f"{self.manager.last_name} {self.manager.first_name}"
 
 
 def project_managers_post_save(sender, instance, created, **kwargs):
