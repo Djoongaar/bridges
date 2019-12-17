@@ -85,7 +85,7 @@ class NewsDeleteView(PermissionRequiredMixin, DeleteView):
 # ==================   В этом классе выходит ошибка Integrity Error ======================
 
 class NewsCommentCreate(LoginRequiredMixin, View):
-    login_url = '/auth/account/login/'
+    login_url = '/auth/login/'
     form_model = NewsDiscussItem
     template = 'newsapp/newsdiscussitem_form.html'
     form = NewsDiscussItemForm
