@@ -82,34 +82,6 @@ class NewsDeleteView(PermissionRequiredMixin, DeleteView):
     extra_context = {}
 
 
-# class NewsCommentCreate(UpdateView):
-#     model = News
-#     fields = []
-#     template_name = 'newsapp/newsdiscussitem_form.html'
-#
-#     def get_context_data(self, **kwargs):
-#         data = super(NewsDiscussItemUpdateView, self).get_context_data(**kwargs)
-#         NewsFormSet = inlineformset_factory(News, NewsDiscussItem, form=NewsDiscussItemForm, extra=1)
-#         if self.request.POST:
-#             data['comments'] = NewsFormSet(self.request.POST, instance=self.object)
-#         else:
-#             data['comments'] = NewsFormSet(instance=self.object)
-#         return data
-#
-#     def form_valid(self, form):
-#         context = self.get_context_data()
-#         comments = context['comments']
-#
-#         if form.is_valid():
-#             # form.instance.author = self.request.user
-#             self.object = form.save()
-#             if comments.is_valid():
-#                 comments.instance = self.object
-#                 comments.save()
-#                 return HttpResponseRedirect(reverse_lazy('news:news_list'))
-#         return HttpResponse(status=400)
-
-
 # ==================   В этом классе выходит ошибка Integrity Error ======================
 
 class NewsCommentCreate(LoginRequiredMixin, View):
