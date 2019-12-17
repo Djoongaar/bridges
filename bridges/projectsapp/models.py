@@ -99,7 +99,7 @@ class ProjectDiscussItem(models.Model):
     creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
 
     def __str__(self):
-        return 'комментарий к дискусии {}'.format(self.project)
+        return 'комментарий'
 
 
 class ProjectImage(models.Model):

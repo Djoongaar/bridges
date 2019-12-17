@@ -316,7 +316,19 @@
                                                                 <div class="comment-meta">
                                                                     <h6 class="comment-author"> {{ comment.user }} </h6>
                                                                     <span class="comment-time">{{ comment.creation_date }}</span>
-{#                                                                    <span class="comment-reply"><a class="comment-reply-link" href="#">Reply</a></span>#}
+                                                                    {% if request.user.is_superuser or comment.user == request.user %}
+                                                                    <span class="comment-reply">
+                                                                        <a class="comment-reply-link" href="{% url 'projects:comment_update' comment.pk %}">
+                                                                            Edit
+                                                                        </a>
+                                                                    </span>
+                                                                    <span class="comment-reply">
+                                                                        <a class="comment-reply-link"
+                                                                           href="{% url 'projects:comment_delete' object.pk comment.pk %}">
+                                                                            DELETE
+                                                                        </a>
+                                                                    </span>
+                                                                    {% endif %}
                                                                 </div>
                                                                 <div class="comment-text">
                                                                     <p>{{ comment.comment }}</p>

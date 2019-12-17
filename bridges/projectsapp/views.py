@@ -208,9 +208,59 @@ def project_discuss_items(request, pk):
     context = {
         'project': project,
         'user': user,
-        'project_discuss_items': project_discuss_items,
         'form': report_form,
         'page_title': 'Комментарий',
         'bred_title': 'Комментарии',
     }
     return render(request, 'projectsapp/project_discuss_detail.html', context)
+
+
+@login_required
+def comment_update(request, comment_pk):
+    """ updating comments """
+    comment = ProjectDiscussItem.objects.get(pk=comment_pk)
+    if request.user.is_superuser or comment.user == request.user:
+        if request.method == 'POST':
+            report_form = ProjectDiscussItemForm(data=request.POST, instance=comment)
+            if report_form.is_valid():
+                new_report_form = report_form.save(commit=False)
+                new_report_form.project = comment.project
+                new_report_form.user = comment.user
+                new_report_form.save()
+                return redirect(comment.project.get_absolute_url())
+        else:
+            report_form = ProjectDiscussItemForm(initial={
+                'project': comment.project,
+                'user': comment.user,
+                'comment': comment.comment
+            })
+        context = {
+            'project': comment.project,
+            'user': comment.user,
+            'form': report_form,
+            'page_title': 'Комментарий',
+            'bred_title': 'Комментарии',
+        }
+        return render(request, 'projectsapp/project_discuss_detail.html', context)
+
+
+# @login_required
+# def comment_delete(request, comment_pk):
+#     """ deleting comments """
+#     comment = ProjectDiscussItem.objects.get(pk=comment_pk)
+#     if comment.user == request.user:
+#         comment.delete()
+#     else:
+#         raise Http404
+#     context = {
+#         'page_title': 'Комментарий',
+#         'bred_title': 'Комментарии',
+#     }
+#     return render(request, 'projectsapp/projectitems_confirm_delete.html', context)
+
+
+class CommentDeleteView(DeleteMixin, View):
+    form_model = ProjectDiscussItem
+    template = 'projectsapp/projectitems_confirm_delete.html'
+    page_title = 'Удаление комментария'
+    bred_title = 'Комментарий'

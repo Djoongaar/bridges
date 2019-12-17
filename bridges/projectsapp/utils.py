@@ -68,8 +68,8 @@ class DeleteMixin:
 
     def get(self, request, project_pk, pk):
         project = Project.objects.get(pk=project_pk)
-        if request.user.has_perm('change_project', project):
-            obj = get_object_or_404(self.form_model, pk=pk)
+        obj = get_object_or_404(self.form_model, pk=pk)
+        if request.user.has_perm('change_project', project) or obj.user == request.user:
             context = {
                 'obj': obj,
                 'project': project,
