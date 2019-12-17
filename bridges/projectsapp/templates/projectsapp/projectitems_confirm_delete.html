@@ -6,7 +6,7 @@
 
         <form method="post">
             {% csrf_token %}
-            <p>Вы уверены, что хотите удалить?</p>
+            <p>Вы уверены, что хотите удалить {{ obj }}?</p>
             <button type="submit" value="Confirm" class="wprt-button icon-flash delete-button">
                 УДАЛИТЬ
             </button>

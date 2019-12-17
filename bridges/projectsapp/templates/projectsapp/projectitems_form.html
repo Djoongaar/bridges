@@ -16,4 +16,9 @@
             </a>
         </form>
     </div>
+    <script>
+    let formAttrs = document.querySelectorAll('form p');
+    console.log(formAttrs);
+    formAttrs[formAttrs.length - 1].setAttribute('style', 'display: none;')
+    </script>
 {% endblock %}
