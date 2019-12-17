@@ -806,7 +806,7 @@ body.page #main-content { padding-top: 0; padding-bottom: 0; }
 .hentry .post-tags a:hover { background-color: #4b4b4b; color: #fff; }
 
 /* Comments */
-.comments-area { margin-top: 65px; }
+.comments-area { margin-top: 25px; }
 .comments-area .comments-title,
 .comments-area .comment-reply-title { font-size: 1.428em; margin-bottom: 30px; position: relative; text-transform: uppercase; }
 
