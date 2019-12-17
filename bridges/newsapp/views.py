@@ -133,16 +133,12 @@ class NewsCommentCreate(LoginRequiredMixin, View):
 
     def post(self, request, news_pk):
         news = News.objects.get(pk=news_pk)
+        user = request.user
         form = self.form(request.POST)
         if form.is_valid():
-            hacked = {
-                "news": News.objects.get(pk=form.data["news"]),
-                "user": Users.objects.get(pk=form.data["user"])
-            }
-            data = {**form.data, **hacked}
-            data = {k: v[0] if isinstance(v, list) else v for k, v in data.items() if
-                    k in {f.name for f in self.form_model._meta.fields}}
-            obj = self.form_model(**data)
+            obj = form.save(commit=False)
+            obj.news = news
+            obj.user = user
             obj.save()
             return HttpResponseRedirect(news.get_absolute_url())
         return HttpResponse(status=400)
