@@ -73,6 +73,9 @@ class Project(models.Model):
     def get_finished_projects(self):
         pass
 
+    def get_comments(self):
+        return self.comments.select_related()
+
     class Meta:
         ordering = ('-updated',)
         verbose_name = 'Проект'
@@ -87,6 +90,16 @@ def pre_save_map_mark(sender, instance, *args, **kwargs):
 
 
 pre_save.connect(pre_save_map_mark, sender=Project)
+
+
+class ProjectDiscussItem(models.Model):
+    project = models.ForeignKey(Project, verbose_name='проект', related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, verbose_name='участник обсуждения', on_delete=models.CASCADE)
+    comment = models.TextField(verbose_name='добавить сообщение')
+    creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
+
+    def __str__(self):
+        return 'комментарий к дискусии {}'.format(self.project)
 
 
 class ProjectImage(models.Model):
@@ -105,7 +118,6 @@ class ProjectImage(models.Model):
         verbose_name_plural = 'Фотографии проектов'
 
 
-# СВЯЗАНО
 class ProjectHasTechnicalSolutions(models.Model):
     """ Модель связи технических решений применяемых на объекте с указанием их объема  """
     name = models.CharField(verbose_name='название конструкции или участка', max_length=256, blank=True, null=True)
@@ -223,20 +235,3 @@ def project_managers_post_delete(sender, instance, **kwargs):
 
 
 post_delete.connect(project_managers_post_delete, sender=ProjectManagers)
-
-
-class ProjectDiscussMember(models.Model):
-    project = models.ForeignKey(Project, verbose_name='проект обсуждения', on_delete=models.CASCADE)
-    user = models.ForeignKey(Users, verbose_name='участник обсуждения', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return 'участник дискусии {}'.format(self.project)
-
-
-class ProjectDiscussItem(models.Model):
-    project = models.ForeignKey(Project, verbose_name='проект обсуждения', on_delete=models.CASCADE)
-    user = models.ForeignKey(Users, verbose_name='участник обсуждения', on_delete=models.CASCADE)
-    comment = models.TextField(verbose_name='добавить сообщение', max_length=1500, null=True, blank=True)
-
-    def __str__(self):
-        return 'комментарий к дискусии {}'.format(self.project)

@@ -19,6 +19,4 @@ urlpatterns = [
     path('manager/delete/<int:project_pk>/<int:pk>', projectsapp.ProjectsManagerDeleteView.as_view(), name='manager_delete'),
     path('gallery/update/<int:pk>', projectsapp.gallery_update, name='gallery_update'),
     path('discuss/items/<int:pk>', projectsapp.project_discuss_items, name='project_discuss_items'),
-    path('discuss/edit/members/<int:pk>', projectsapp.project_discuss_edit_members,
-         name='project_discuss_edit_members'),
 ]

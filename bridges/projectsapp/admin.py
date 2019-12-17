@@ -30,11 +30,6 @@ class ProjectDiscussItemInline(admin.TabularInline):
     extra = 0
 
 
-class ProjectDiscussMemberInline(admin.TabularInline):
-    model = ProjectDiscussMember
-    extra = 0
-
-
 @admin.register(Project)
 class ProjectAdmin(GuardedModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
@@ -47,7 +42,6 @@ class ProjectAdmin(GuardedModelAdmin):
         ProjectCompanyInline,
         ProjectHasTechnicalSolutionsInline,
         ProjectImageInline,
-        ProjectDiscussMemberInline,
         ProjectDiscussItemInline
     ]
 
