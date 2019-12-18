@@ -55,6 +55,7 @@ class TechnicalSolutions(models.Model):
     short_desc = models.TextField(verbose_name='краткое описание материала', blank=True, null=True)
     description = models.TextField(verbose_name='описание материала', blank=True)
     price = models.DecimalField(verbose_name='цена', max_digits=8, decimal_places=2, default=0)
+    quantity = models. IntegerField(verbose_name='объем работ', default=1)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now_add=False, auto_now=True)
     is_active = models.BooleanField(verbose_name='активен', default=True)
@@ -70,6 +71,9 @@ class TechnicalSolutions(models.Model):
 
     def get_works(self):
         return self.works.select_related().order_by('pk')
+
+    def get_materials(self):
+        return self.materials.select_related().order_by('pk')
 
     def get_all_docs(self):
         pass
@@ -196,7 +200,6 @@ class Work(models.Model):
     name = models.CharField(verbose_name='название работ', max_length=128, unique=True)
     category = models.ForeignKey(WorkCategory, verbose_name='категория работ', on_delete=models.CASCADE)
     measure = models.ForeignKey(MeasureTypes, verbose_name='Единица измерения', on_delete=models.CASCADE)
-    materials = models.ManyToManyField(Material, blank=True)
     image = ProcessedImageField(verbose_name='картинка материала', upload_to=work_image_upload_to,
                                 processors=[ResizeToFill(370, 220)],
                                 default='products_images/default-product-image.png', blank=True)
@@ -204,7 +207,6 @@ class Work(models.Model):
     alt_desc = models.CharField(verbose_name='alt фотографии', max_length=128, blank=True)
     short_desc = models.CharField(verbose_name='краткое описание материала', max_length=500, blank=True, null=True)
     description = models.TextField(verbose_name='описание материала', blank=True)
-    price = models.DecimalField(verbose_name='цена', max_digits=8, decimal_places=2, default=0)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -237,16 +239,12 @@ class WorkImage(models.Model):
         verbose_name_plural = 'Фотографии работ'
 
 
-# --------------------------------------------    МОДЕЛИ СВЯЗИ   ------------------------------------------------
-
-
 class ProductWork(models.Model):
     product = models.ForeignKey(TechnicalSolutions, related_name='works', on_delete=models.CASCADE)
     work = models.ForeignKey(Work, verbose_name='Вид работы', on_delete=models.CASCADE)
     material = models.ManyToManyField(Material, verbose_name='Применяемые материалы', blank=True)
-    consumption = models.DecimalField(verbose_name='расход материала', max_digits=8, decimal_places=2, blank=True,
-                                      null=True)
     value = models.DecimalField(verbose_name='трудозатраты', max_digits=8, decimal_places=2, default=0)
+    price = models.DecimalField(verbose_name='цена', max_digits=8, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = 'Перечень работ продукта'
@@ -259,3 +257,14 @@ class TechnicalSolutionsHasService(models.Model):
 
     def __str__(self):
         return f"{self.service}"
+
+
+class ProductMaterial(models.Model):
+    product = models.ForeignKey(TechnicalSolutions, related_name='materials', on_delete=models.CASCADE)
+    material = models.ForeignKey(Material, verbose_name='Основной материал', related_name='+', on_delete=models.CASCADE)
+    alt_materials = models.ManyToManyField(Material, verbose_name='альтернативные материалы', blank=True)
+    consumption = models.DecimalField(verbose_name='расход материала', max_digits=8, decimal_places=2)
+
+    class Meta:
+        verbose_name = 'Перечень материалов продукта'
+        verbose_name_plural = 'Перечень материалов продукта'

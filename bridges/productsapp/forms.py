@@ -1,5 +1,5 @@
 from django import forms
-from productsapp.models import *
+from productsapp.models import TechnicalSolutions, TechnicalSolutionsHasService, ProductWork
 
 
 class ProductForm(forms.ModelForm):
@@ -23,4 +23,4 @@ class TechSolHasServiceForm(forms.ModelForm):
 class ProductWorkForm(forms.ModelForm):
     class Meta:
         model = ProductWork
-        fields = ['work', 'material', 'consumption']
+        fields = ['work', 'material', 'price']

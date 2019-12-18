@@ -59,6 +59,18 @@ class MaterialImageAdmin(admin.ModelAdmin):
 admin.site.register(MaterialImage, MaterialImageAdmin)
 
 
+class ProductMaterialAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'product',)
+    list_display_links = ('product',)
+    search_fields = ('product', )
+
+    class Meta:
+        model = ProductMaterial
+
+
+admin.site.register(ProductMaterial, ProductMaterialAdmin)
+
+
 # -----------------------    МОДЕЛИ РАБОТ   -------------------------------------
 
 
@@ -85,7 +97,6 @@ class ProductWorkInline(admin.TabularInline):
 
 
 class WorkAdmin(admin.ModelAdmin):
-    # prepopulated_fields = {'slug': ('name',)}
     list_display = ('name', 'category', 'measure',)
     list_display_links = ('name',)
     search_fields = ('name',)

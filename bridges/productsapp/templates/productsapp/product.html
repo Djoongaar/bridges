@@ -80,35 +80,52 @@
                                 </div>
                                     <div class="col-md-12">
                                         <div class="wprt-toggle active style-1">
-                                            <h3 class="toggle-title">Состав работ и материалов</h3>
+                                            <h3 class="toggle-title">Состав материалов</h3>
                                             <div class="toggle-content" style="font-family: 'Times New Roman'; font-size: larger;
                                             color: #4d4949;">
-                                                <table>
+                                                <table id="table">
                                                     <tr>
                                                         <td style="text-align: center; font-weight: bold; width: 3%">№</td>
-                                                        <td style="text-align: center; font-weight: bold; width: 50%">Наименование работ</td>
-                                                        <td style="text-align: center; font-weight: bold;">Материалы</td>
-                                                        <td style="text-align: center; font-weight: bold; width: 10%">Расход</td>
-                                                        <td style="text-align: center; font-weight: bold; width: 10%">Ед. изм.</td>
+                                                        <td style="text-align: center; font-weight: bold;">Название</td>
+                                                        <td style="text-align: center; font-weight: bold; width: 15%">Расход, кг/м.кв</td>
+                                                        <td style="text-align: center; font-weight: bold; width: 15%">Кол-во, кг</td>
+                                                        <td style="text-align: center; font-weight: bold; width: 15%">Цена, руб/кг</td>
+                                                        <td style="text-align: center; font-weight: bold; width: 15%">Итого, руб</td>
                                                     </tr>
-                                                    {% for item in works %}
-                                                        <tr>
+                                                    {% for item in materials %}
+                                                        <tr class="FORM">
                                                             <td style="text-align: center;">{{ forloop.counter }}</td>
-                                                            <td>{{ item.work.name }}</td>
                                                             <td style="text-align: right;"><i>
-                                                                {% for i in item.material.all %}
-                                                                    {{ i.name }}{% if not forloop.last %},{% endif %}
-                                                                {% endfor %}
+                                                                {{ item.material }}
                                                             </i></td>
-                                                            <td style="text-align: center;">{% if item.consumption %}{{ item.consumption }}{% endif %}</td>
-                                                            <td style="text-align: center;">
-                                                                {% if item.material.all %}
-                                                                    {{ item.work.measure.shortcut }}
-                                                                {% endif %}
+                                                            <td style="text-align: center;" id="{{ forloop.counter }}-consumption">
+                                                                {{ item.consumption }}
+                                                            </td>
+                                                            <td style="text-align: center;" id="{{ forloop.counter }}-quantity">
+                                                                #t_quant
+                                                            </td>
+                                                            <td style="text-align: center;" id="{{ forloop.counter }}-price">
+                                                                {{ item.material.price }}
+                                                            </td>
+                                                            <td style="text-align: center;" id="{{ forloop.counter }}-cost">
+                                                                #t_cost
                                                             </td>
                                                         </tr>
                                                     {% endfor %}
+                                                        <tr>
+                                                            <td style="text-align: right; font-weight: bold; width: 3%" colspan="5">ИТОГО, руб (с НДС)</td>
+                                                            <td style="text-align: center; font-weight: bold; width: 15%" id="TOTAL">20000</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: right; font-weight: bold; width: 3%" colspan="5">в том числе НДС</td>
+                                                            <td style="text-align: center; font-weight: bold; width: 15%" id="TAX">3333,34</td>
+                                                        </tr>
                                                 </table>
+                                                <form action="">
+                                                <label for="quantity">Объем работ для расчета:</label>
+                                                    <input type="number" style="font-size: 0.7em; width: 150px;" min="1" max="200000" value="{{ product.quantity }}" id="quantity">
+                                                    <a href="##" class="wprt-button small">OK</a>
+                                                </form>
                                                 {% if request.user.is_superuser %}
                                                 <a href="{% url 'products:product_work_update' product.slug %}">редактировать</a>
                                                 {% endif %}
@@ -309,5 +326,39 @@
     </div>
 </div>
 <!--/ Main Content -->
+    <script>
+    window.onload = function () {
+        let consumption, price, orderTotalCost = 0, quantityArr = [], costArr = [];
+        let TOTAL_FORMS = document.querySelectorAll('.FORM');
+        let quantity = parseInt(document.getElementById('quantity').value);
 
+        for(let i = 1; i <=TOTAL_FORMS.length; i++){
+            consumption = parseFloat(document.getElementById(i + '-consumption').innerText.replace(',', '.'));
+            price = parseFloat(document.getElementById(i + '-price').innerText.replace(',','.'));
+            quantityArr[i-1] = (consumption * quantity);
+            document.getElementById(i + '-quantity').innerText = quantityArr[i-1].toFixed(2);
+            costArr[i-1] = (quantityArr[i-1] * price);
+            document.getElementById(i + '-cost').innerText = costArr[i-1].toFixed(2);
+            orderTotalCost += costArr[i-1];
+        }
+        document.getElementById('TOTAL').innerText = orderTotalCost.toFixed(2);
+        document.getElementById('TAX').innerText = ((orderTotalCost / 1.2) * 0.2).toFixed(2);
+    };
+    document.querySelector('form input[type="number"]').addEventListener("change", function () {
+        console.log(this.value);
+        let consumption, price, orderTotalCost = 0, quantityArr = [], costArr = [];
+        let TOTAL_FORMS = document.querySelectorAll('.FORM');
+        for(let i = 1; i <=TOTAL_FORMS.length; i++){
+            consumption = parseFloat(document.getElementById(i + '-consumption').innerText.replace(',', '.'));
+            price = parseFloat(document.getElementById(i + '-price').innerText.replace(',','.'));
+            quantityArr[i-1] = (consumption * this.value);
+            document.getElementById(i + '-quantity').innerText = quantityArr[i-1].toFixed(2);
+            costArr[i-1] = (quantityArr[i-1] * price);
+            document.getElementById(i + '-cost').innerText = costArr[i-1].toFixed(2);
+            orderTotalCost += costArr[i-1];
+        }
+        document.getElementById('TOTAL').innerText = orderTotalCost.toFixed(2);
+        document.getElementById('TAX').innerText = ((orderTotalCost / 1.2) * 0.2).toFixed(2);
+    })
+    </script>
 {% endblock %}

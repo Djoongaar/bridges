@@ -185,7 +185,7 @@ def gallery_update(request, pk):
         raise Http404
 
 
-#  ------------------------------------ PROJECT'S GALLERY crUd----------------------------------------------
+#  ------------------------------------ COMMENTS TO THE PROJECT crUd ---------------------------------------------
 
 @login_required
 def project_discuss_items(request, pk):
@@ -242,21 +242,6 @@ def comment_update(request, comment_pk):
             'bred_title': 'Комментарии',
         }
         return render(request, 'projectsapp/project_discuss_detail.html', context)
-
-
-# @login_required
-# def comment_delete(request, comment_pk):
-#     """ deleting comments """
-#     comment = ProjectDiscussItem.objects.get(pk=comment_pk)
-#     if comment.user == request.user:
-#         comment.delete()
-#     else:
-#         raise Http404
-#     context = {
-#         'page_title': 'Комментарий',
-#         'bred_title': 'Комментарии',
-#     }
-#     return render(request, 'projectsapp/projectitems_confirm_delete.html', context)
 
 
 class CommentDeleteView(DeleteMixin, View):
