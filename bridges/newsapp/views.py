@@ -58,12 +58,17 @@ class NewsDetailView(DetailView):
         return context
 
 
-class NewsCreateView(PermissionRequiredMixin, CreateView):
+class NewsCreateView(LoginRequiredMixin, CreateView):
     """docstring for ProductList"""    
     model = News
-
-    template_name = 'newsapp/blog.html'
+    fields = '__all__'
+    template_name = 'newsapp/newscreate_form.html'
     extra_context = {}
+
+    def get_initial(self):
+        initial = super(NewsCreateView, self).get_initial()
+        initial['author'] = self.request.user
+        return initial
 
 
 class NewsUpdateView(PermissionRequiredMixin, UpdateView):

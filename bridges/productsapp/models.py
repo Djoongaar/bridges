@@ -63,10 +63,16 @@ class TechnicalSolutions(models.Model):
     def get_absolute_url(self):
         return reverse('products:product', args=[str(self.slug)])
 
+    @staticmethod
+    def get_items():
+        """Выводит активные экземпляры класса"""
+        return TechnicalSolutions.objects.filter(is_active=True).order_by('pk')
+
     def __str__(self):
         return f"{self.name}"
 
     def get_projects(self):
+        """Выводит уникальные связанные экземпляры класса Project"""
         return self.projects.select_related().distinct('project_id')
 
     def get_works(self):
