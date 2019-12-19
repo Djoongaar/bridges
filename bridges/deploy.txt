@@ -1,0 +1,154 @@
+Часть 1
+Ifconfig
+Ping 192.168.1.205 (внешний ip компьютера),  255.255.255.0 (маска), 192.168.1.255 (бродкаст)
+Установить ssh
+sudo apt update (apt - Advanced Packaging Tool, -update: обновить списки доступных пакетов)
+sudo apt install openssh-server (-install: установить пакет)
+Скачать Putty, соединиться с сервером
+Установить ftp
+sudo apt install vsftpd (если не обновлялись то сначала выполнить команду sudo apt update)
+Заходим в настройки ftp сервера
+sudo nano /etc/vsftpd.conf
+Раскомментировать write_enable=YES
+(выйти из файла с сохранением в редакторе nano: Ctrl+O --> Enter --> Ctrl+X)
+Перезагружаем ftp
+service vsftpd restart (потребует пароль для sudo, затем в случае успеха появится ===AUTHENTICATION COMPLETE ===)
+Устанавливаем FileZilla, соединяемся с сервером (используем IP adress 192.168.1.205 а также username djoongaar и пароль)
+Переносим проект на сервер
+Устанавливаем права на проект на сервере – 755 (и на вложенные!) для этого ставим флажок: перенаправлять во все вложенные папки и файлы)
+Проверяем наличие проекта на сервере (команда ls в путти, должен появиться директория проекта)
+Часть 2
+Проверяем версию Python
+python3 --version (При установке Убунту версии 18.04 выдает Python 3.6.8)
+Устанавливаем pip для Python3
+sudo apt install python3-pip (Через него ставим пакеты на Питоне)
+Настраиваем виртуальное окружение
+cd /home/serv/bridges или просто cd bridges
+sudo apt-get install python3-venv
+python3 -m venv django2 (django2 - это название виртуального окружения, может быть любое которое не конфликтует)
+python3 -m venv django2 --without-pip (ЭТУ КОМАНДУ НЕ ВЫПОЛНЯЛ)
+source django2/bin/activate (активирует виртуальное окружение)
+Устанавливаем зависимости
+pip3 install -r requirements.txt
+--without-pip install -r requirements.txt --without-pip (ЭТУ КОМАНДУ НЕ ВЫПОЛНЯЛ)
+""" поменял версию докутилс с 0.15.1 на 0.15.0"""
+""" sudo apt-get install libpq-dev - установил так как не ставилась psycopg2 """
+""" pip install wheel """
+Устанавливаем postgres
+sudo apt-get install postgresql postgresql-contrib
+Запускаем интерпретатор Postgresql
+sudo -u postgres psql
+появится поле postgres# - означает что работаем в постгресе
+Создаем данные для базы
+CREATE DATABASE bridges;
+CREATE USER bridges with NOSUPERUSER PASSWORD 'bridges';
+GRANT ALL PRIVILEGES ON DATABASE bridges TO bridges;
+
+ALTER ROLE bridges SET CLIENT_ENCODING TO 'UTF8';
+ALTER ROLE bridges SET default_transaction_isolation TO 'READ COMMITTED';
+ALTER ROLE bridges SET TIME ZONE 'Europe/Moscow';
+\q - чтобы выйти в виртуальное окружение (django2)
+Применяем миграции
+python manage.py migrate
+Загружаем данные из db.json
+python manage.py loaddata db.json
+Запускаем тестовый сервер
+python manage.py runserver
+Устаналиваем gunicorn, который будет по технологии wsgi запускать проект
+pip install gunicorn
+Это связка nginx и Django
+Проверяем работает ли он
+gunicorn bridges.wsgi
+Делаем связку nginx и gunicorn через сокеты
+sudo nano /etc/systemd/system/gunicorn.service
+Заполняем данными файл
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=djoongaar
+Group=www-data
+WorkingDirectory=/home/djoongaar/bridges
+ExecStart=/home/djoongaar/bridges/django2/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/djoongaar/bridges/bridges.sock bridges.wsgi
+
+[Install]
+WantedBy=multi-user.target
+Проверяем, что гуникорн работает
+
+sudo systemctl enable gunicorn
+sudo systemctl start gunicorn
+sudo systemctl status gunicorn
+	service gunicorn status
+
+Устанавливаем nginx 
+sudo apt install nginx
+
+Настроить nginx
+Настройки каждого сайта
+
+sudo nano /etc/nginx/sites-available/bridges 
+
+server {
+    listen 80;
+    server_name 192.168.1.205;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/djoongaar/bridges;
+    }
+
+    location /media/ {
+        root /home/djoongaar/bridges;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/djoongaar/bridges/bridges.sock;
+    }
+}
+Проверяем работу nginx
+sudo ln -s /etc/nginx/sites-available/bridges /etc/nginx/sites-enabled
+Проверяем настройки nginx
+sudo nginx -t
+service nginx restart
+service nginx status
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Для установки нужно последовательно выполнить несколько шагов:
+Установка требований.
+sudo apt-get update
+sudo apt-get install build-essential checkinstall
+sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev \
+    libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+Скачать архив с исходным кодом с официального сайта. Далее выполнить распаковку.
+cd /usr/src
+sudo wget https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz
+sudo tar -xf Python-3.7.3.tar.xz
+Компиляция исходников Python.
+cd Python-3.7.3
+sudo ./configure --enable-optimizations
+sudo make altinstall
+Проверка версии Python.
+python3.7 -V
+Для того, чтобы при запуске интерпретатора (команда python3) стартовала актуальная версия, необходимо выполнить следующую команду:
+sudo ln -fs /usr/local/bin/python3.7 /usr/bin/python3.5
+

@@ -1,8 +1,8 @@
 from django.db import models
 from django.http import request
 from django.urls import reverse
-from imagekit.models import ProcessedImageField
-from pilkit.processors import ResizeToFill
+# from imagekit.models import ProcessedImageField
+# from pilkit.processors import ResizeToFill
 
 from productsapp.models import TechnicalSolutions
 from authapp.models import Users
@@ -23,8 +23,10 @@ class News(models.Model):
     name = models.CharField(verbose_name='название', max_length=256, unique=True)
     slug = models.SlugField(verbose_name='слаг', max_length=128, unique=True)
     description = models.TextField(verbose_name='описание', blank=True)
-    image = ProcessedImageField(verbose_name='картинка новости', upload_to='news_avatars',
-                                processors=[ResizeToFill(370, 220)], default='news_avatars/no_news.jpg', blank=True)
+    # image = ProcessedImageField(verbose_name='картинка новости', upload_to='news_avatars',
+    #                             processors=[ResizeToFill(370, 220)], default='news_avatars/no_news.jpg', blank=True)
+    image = models.ImageField(verbose_name='картинка новости', upload_to='news_avatars',
+                              default='news_avatars/no_news.jpg', blank=True)
     creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
     author = models.ForeignKey(Users, verbose_name='Автор', on_delete=models.CASCADE, default=1)

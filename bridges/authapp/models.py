@@ -6,8 +6,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.urls import reverse
 from guardian.shortcuts import assign_perm
-from imagekit.models import ProcessedImageField
-from pilkit.processors import ResizeToFill
+# from imagekit.models import ProcessedImageField
+# from pilkit.processors import ResizeToFill
 
 
 def image_upload_to(instance, filename):
@@ -91,8 +91,9 @@ class Users(AbstractUser):
     first_name = models.CharField(verbose_name='Имя', max_length=50)
     patronymic = models.CharField(verbose_name='Отчество', max_length=50, default='', null=True, blank=True)
     last_name = models.CharField(verbose_name='Фамилия', max_length=50)
-    avatar = ProcessedImageField(verbose_name='Аватар', upload_to=image_upload_to, processors=[ResizeToFill(462, 462)],
-                                 blank=True)
+    # avatar = ProcessedImageField(verbose_name='Аватар', upload_to=image_upload_to, processors=[ResizeToFill(462, 462)],
+    #                              blank=True)
+    avatar = models.ImageField(verbose_name='Аватар', upload_to=image_upload_to, blank=True)
     description = models.TextField(verbose_name='Подробно о себе', max_length=5000, blank=True)
     gender = models.CharField(verbose_name='Пол', max_length=6, choices=GENDER_CHOICES, blank=True, null=True)
     birthday = models.DateField(verbose_name='День рождения', blank=True, null=True)
