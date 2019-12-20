@@ -12,14 +12,14 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="wprt-spacer" data-desktop="80" data-mobi="60" data-smobi="60"></div>
+                                    <div class="wprt-spacer" data-desktop="40" data-mobi="30" data-smobi="30"></div>
                                 </div><!-- /.col-md-12 -->
 <!--КРАТКОЕ ОПИСАНИЕ-->
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div>
                                         <h3 class="line-height-normal margin-bottom-10">КРАТКОЕ ОПИСАНИЕ</h3>
                                         {% if request.user.is_superuser %}
-                                        <a href="{% url 'products:product_update' product.slug %}">редактировать</a>
+                                        <a href="{% url 'products:product_update' object.pk %}">редактировать</a>
                                         {% endif %}
                                         <div class="wprt-lines style-1 custom-3">
                                             <div class="line-1"></div>
@@ -28,37 +28,29 @@
 
                                         <div class="wprt-spacer" data-desktop="30" data-mobi="25" data-smobi="25"></div>
 
-                                        <p>{{ product.short_desc }}</p>
-                                        <p>{{ product.description }}</p>
+                                        <p>{{ object.short_desc }}</p>
+                                        <p>{{ object.description }}</p>
                                     </div>
-                                </div><!-- /.col-md-8 -->
+                                </div><!-- /.col-md-12 -->
 <!--ДОСТУПНЫЕ СЕРВИСЫ ПО ПРОДУКТУ-->
-                                <div class="col-md-4">
-                                    <div class="wprt-spacer" data-desktop="0" data-mobi="20" data-smobi="20"></div>
-
-                                    <h3 class="line-height-normal margin-bottom-10">ДОСТУПНЫЕ СЕРВИСЫ</h3>
-                                    <div class="wprt-lines style-1 custom-3">
-                                        <div class="line-1"></div>
-                                        <div class="line-2"></div>
-                                    </div>
-
-                                    <div class="wprt-spacer" data-desktop="30" data-mobi="25" data-smobi="25"></div>
-{#                                    {% for item in product_services %}#}
-{#                                    <ul class="wprt-list style-2 accent-color margin-bottom-10">#}
-{#                                        <li><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></li>#}
-{#                                        <li><strong>Проектировщик:</strong> Richardson and Sandra</li>#}
-{#                                        <li><strong>подрядчик:</strong> GraphicRiver Builder Corporate</li>#}
-{#                                        <li><strong>Бюджет:</strong> $1 250 000,00</li>#}
-{#                                    </ul>#}
-{#                                    {% endfor %}#}
-                                    {% if request.user.is_superuser %}
-                                    <a href="{% url 'products:product_service_update' product.slug %}">редактировать</a>
-                                    {% endif %}
-                                    {% if user.is_authenticated %}
-                                        <p><a href="{% url 'orders:order_create' product.pk %}"
-                                              class="wprt-button small">ЗАКАЗАТЬ</a></p>
-                                    {% endif %}
-                                </div><!-- /.col-md-4 -->
+{#                                <div class="col-md-4">#}
+{#                                    <div class="wprt-spacer" data-desktop="0" data-mobi="20" data-smobi="20"></div>#}
+{##}
+{#                                    <h3 class="line-height-normal margin-bottom-10">ДОСТУПНЫЕ СЕРВИСЫ</h3>#}
+{#                                    <div class="wprt-lines style-1 custom-3">#}
+{#                                        <div class="line-1"></div>#}
+{#                                        <div class="line-2"></div>#}
+{#                                    </div>#}
+{##}
+{#                                    <div class="wprt-spacer" data-desktop="30" data-mobi="25" data-smobi="25"></div>#}
+{#                                    {% if request.user.is_superuser %}#}
+{#                                    <a href="{% url 'products:product_service_update' object.pk %}">редактировать</a>#}
+{#                                    {% endif %}#}
+{#                                    {% if user.is_authenticated %}#}
+{#                                        <p><a href="{% url 'orders:order_create' object.pk %}"#}
+{#                                              class="wprt-button small">ЗАКАЗАТЬ</a></p>#}
+{#                                    {% endif %}#}
+{#                                </div><!-- /.col-md-4 -->#}
 <!--СОСТАВ РАБОТ И МАТЕРИАЛОВ-->
                                 <div class="col-md-12">
                                     <div class="wprt-spacer" data-desktop="30" data-mobi="60" data-smobi="60"></div>
@@ -71,7 +63,7 @@
 
                                         <div class="wprt-spacer" data-desktop="30" data-mobi="25" data-smobi="25"></div>
 
-                                        <p>Ниже представлен типовой перечень работ. Полный комплекс мероприятий,
+                                        <p>Ниже представлен типовой состав материалов. Полный комплекс мероприятий,
                                             а также условия их проведения и методы контроля качества определяется проектной и
                                             рабочей документацией, а также Технологическим регламентом. Рекомендуемый
                                             к применению технологический реглмент Вы можете загрузить на этой странице
@@ -114,20 +106,22 @@
                                                     {% endfor %}
                                                         <tr>
                                                             <td style="text-align: right; font-weight: bold; width: 3%" colspan="5">ИТОГО, руб (с НДС)</td>
-                                                            <td style="text-align: center; font-weight: bold; width: 15%" id="TOTAL">20000</td>
+                                                            <td style="text-align: center; font-weight: bold; width: 15%" id="TOTAL"></td>
                                                         </tr>
                                                         <tr>
                                                             <td style="text-align: right; font-weight: bold; width: 3%" colspan="5">в том числе НДС</td>
-                                                            <td style="text-align: center; font-weight: bold; width: 15%" id="TAX">3333,34</td>
+                                                            <td style="text-align: center; font-weight: bold; width: 15%" id="TAX"></td>
                                                         </tr>
                                                 </table>
                                                 <form action="">
-                                                <label for="quantity">Объем работ для расчета:</label>
-                                                    <input type="number" style="font-size: 0.7em; width: 150px;" min="1" max="200000" value="{{ product.quantity }}" id="quantity">
-                                                    <a href="##" class="wprt-button small">OK</a>
+                                                <label for="quantity">Объем работ:</label>
+                                                    <input type="number" style="font-size: 0.7em; width: 150px;" min="1" max="200000" value="{{ object.quantity }}" id="quantity">
+                                                    <a href="##" class="wprt-button small">РАСЧИТАТЬ</a>
+                                                <a href="##"
+{#                                              class="wprt-button small wop">ЗАКАЗАТЬ</a>
                                                 </form>
                                                 {% if request.user.is_superuser %}
-                                                <a href="{% url 'products:product_work_update' product.slug %}">редактировать</a>
+                                                <a href="{% url 'products:product_work_update' object.pk %}">редактировать</a>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -327,10 +321,14 @@
 </div>
 <!--/ Main Content -->
     <script>
+
+{#  =====================  ЗАПОЛНЕНИЕ ТАБЛИЦЫ КОЛИЧЕСТВАМИ МАТЕРИАЛОВ И ЦЕНАМИ  =======================  #}
+
     window.onload = function () {
         let consumption, price, orderTotalCost = 0, quantityArr = [], costArr = [];
         let TOTAL_FORMS = document.querySelectorAll('.FORM');
         let quantity = parseInt(document.getElementById('quantity').value);
+
 
         for(let i = 1; i <=TOTAL_FORMS.length; i++){
             consumption = parseFloat(document.getElementById(i + '-consumption').innerText.replace(',', '.'));
@@ -344,6 +342,18 @@
         document.getElementById('TOTAL').innerText = orderTotalCost.toFixed(2);
         document.getElementById('TAX').innerText = ((orderTotalCost / 1.2) * 0.2).toFixed(2);
     };
+
+{# =======================  СООБЩЕНИЕ: "КНОПКА В РЕЖИМЕ РАЗРАБОТКИ"  ==========================  #}
+
+    let wopButtons = document.querySelectorAll('.wop');
+    wopButtons.forEach(function (item) {
+        item.addEventListener('click', function () {
+            alert('В разработке')
+        })
+    });
+
+{#  ======================  АВТОМАТИЧЕСКИЙ РАСЧЕТ СТОИМОСТИ ЗАКАЗА  =====================  #}
+
     document.querySelector('form input[type="number"]').addEventListener("change", function () {
         console.log(this.value);
         let consumption, price, orderTotalCost = 0, quantityArr = [], costArr = [];
