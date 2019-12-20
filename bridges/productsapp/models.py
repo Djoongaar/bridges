@@ -60,15 +60,18 @@ class TechnicalSolutions(models.Model):
     quantity = models. IntegerField(verbose_name='объем работ', default=1)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now_add=False, auto_now=True)
-    is_active = models.BooleanField(verbose_name='активен', default=True)
+    is_active = models.BooleanField(verbose_name='активен', default=False)
 
     def get_absolute_url(self):
         return reverse('products:product', args=[str(self.slug)])
 
-    @staticmethod
-    def get_items():
+    def get_items(self):
+        """Выводит все экземпляры класса"""
+        return self.objects.all().order_by('pk')
+
+    def get_active_items(self):
         """Выводит активные экземпляры класса"""
-        return TechnicalSolutions.objects.filter(is_active=True).order_by('pk')
+        return self.objects.filter(is_active=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -77,14 +80,18 @@ class TechnicalSolutions(models.Model):
         """Выводит уникальные связанные экземпляры класса Project"""
         return self.projects.select_related().distinct('project_id')
 
+    def get_active_projects(self):
+        """Выводит уникальные связанные экземпляры класса Project"""
+        return self.projects.select_related().distinct('project_id').filter(project__status='завершен')
+
     def get_works(self):
         return self.works.select_related().order_by('pk')
 
     def get_materials(self):
         return self.materials.select_related().order_by('pk')
 
-    def get_all_docs(self):
-        pass
+    def get_docs(self):
+        return self.docs.select_related()
 
     class Meta:
         verbose_name = 'Техническое решение'

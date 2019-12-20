@@ -2,8 +2,10 @@ from django.contrib.auth.decorators import user_passes_test
 from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
+
 from productsapp.forms import ProductUpdateForm, ProductForm, TechSolHasServiceForm, ProductWorkForm
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from productsapp.models import TechnicalSolutions, TechnicalSolutionsHasService, ProductWork
 from researchapp.models import Document
 from servicesapp.models import Service
@@ -21,33 +23,65 @@ class ProductsView(ListView):
         return TechnicalSolutions.objects.all().order_by('pk').filter(is_active=True)
 
 
-def product(request, slug):
-    item = get_object_or_404(TechnicalSolutions, slug=slug)
-    docs = Document.objects.filter(techsol__pk=item.pk)
-    publications = docs.filter(type_id=5)
-    researches = docs.filter(type__in=(2, 3,))
-    documents = docs.filter(type__id=1)
-    product_services = Service.objects.filter(technicalsolutionshasservice__technicalsolutions__slug=slug)
-    feedback = docs.filter(type__id=4).order_by('pk')
-    if request.user.is_staff:
-        projects = item.get_projects()
-    else:
-        projects = item.get_projects().filter(project__status='завершен')
+class ProductRead(DetailView):
+    model = TechnicalSolutions
+    extra_context = {}
+    not_empty_url = reverse_lazy('products:product')
+    template_name = 'productsapp/product.html'
 
-    content = {
-        'projects': projects,
-        'works': item.get_works(),
-        'materials': item.get_materials(),
-        'page_title': item,
-        'bred_title': item,
-        'product': item,
-        'researches': researches,
-        'documents': documents,
-        'feedback': feedback,
-        'publications': publications,
-        'product_services': product_services,
-    }
-    return render(request, 'productsapp/product.html', content)
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return TechnicalSolutions.objects.all()
+        else:
+            return TechnicalSolutions.objects.filter(is_active=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductRead, self).get_context_data(**kwargs)
+        docs = self.object.get_docs()
+        publications = docs.filter(type_id=5)
+        researches = docs.filter(type__in=(2, 3,))
+        documents = docs.filter(type__in=(1, 4,))
+        if self.request.user.is_staff:
+            projects = self.object.get_projects()
+        else:
+            projects = self.object.get_active_projects()
+        context.update({'page_title': self.object,
+                        'bred_title': self.object,
+                        'projects': projects,
+                        'publications': publications,
+                        'researches': researches,
+                        'documents': documents
+                        })
+        return context
+
+
+# def product(request, slug):
+#     item = get_object_or_404(TechnicalSolutions, slug=slug)
+#     docs = Document.objects.filter(techsol__pk=item.pk)
+#     publications = docs.filter(type_id=5)
+#     researches = docs.filter(type__in=(2, 3,))
+#     documents = docs.filter(type__id=1)
+#     product_services = Service.objects.filter(technicalsolutionshasservice__technicalsolutions__slug=slug)
+#     feedback = docs.filter(type__id=4).order_by('pk')
+#     if request.user.is_staff:
+#         projects = item.get_projects()
+#     else:
+#         projects = item.get_active_projects()
+#
+#     content = {
+#         'projects': projects,
+#         'works': item.get_works(),
+#         'materials': item.get_materials(),
+#         'page_title': item,
+#         'bred_title': item,
+#         'product': item,
+#         'researches': researches,
+#         'documents': documents,
+#         'feedback': feedback,
+#         'publications': publications,
+#         'product_services': product_services,
+#     }
+#     return render(request, 'productsapp/product.html', content)
 
 
 @user_passes_test(lambda u: u.is_superuser)
