@@ -18,9 +18,9 @@
                                 <div class="col-md-12">
                                     <div>
                                         <h3 class="line-height-normal margin-bottom-10">КРАТКОЕ ОПИСАНИЕ</h3>
-                                        {% if request.user.is_superuser %}
-                                        <a href="{% url 'products:product_update' object.pk %}">редактировать</a>
-                                        {% endif %}
+{#                                        {% if request.user.is_superuser %}#}
+{#                                        <a href="{% url 'products:product_update' object.pk %}">редактировать</a>#}
+{#                                        {% endif %}#}
                                         <div class="wprt-lines style-1 custom-3">
                                             <div class="line-1"></div>
                                             <div class="line-2"></div>
@@ -120,9 +120,9 @@
                                                 <a href="##"
 {#                                              class="wprt-button small wop">ЗАКАЗАТЬ</a>
                                                 </form>
-                                                {% if request.user.is_superuser %}
-                                                <a href="{% url 'products:product_work_update' object.pk %}">редактировать</a>
-                                                {% endif %}
+{#                                                {% if request.user.is_superuser %}#}
+{#                                                <a href="{% url 'products:product_work_update' object.pk %}">редактировать</a>#}
+{#                                                {% endif %}#}
                                             </div>
                                         </div>
                                     </div><!-- /.row -->
@@ -214,51 +214,6 @@
                                 </div><!-- /.col-md-12 -->
                             {% endif %}
 
-<!--ОТЗЫВЫ-->
-                            {% if feedback %}
-                                <div class="col-md-12">
-                                    <div class="wprt-spacer" data-desktop="30" data-mobi="30" data-smobi="60"></div>
-                                    <div>
-                                        <h3 class="line-height-normal margin-bottom-10">ОТЗЫВЫ ЗАКАЗЧИКОВ И ПОДРЯДЧИКОВ</h3>
-                                        <div class="wprt-lines style-1 custom-3">
-                                            <div class="line-1"></div>
-                                            <div class="line-2"></div>
-                                        </div>
-                                        <div class="wprt-spacer" data-desktop="30" data-mobi="25" data-smobi="25"></div>
-                                    </div>
-                                </div><!-- /.col-md-12 -->
-
-                                <div class="col-md-12">
-                                    <div class="wprt-project has-bullets has-arrows bullet-style-2 arrow-position-2" data-layout="slider" data-column="4" data-column2="3" data-column3="2" data-column4="1" data-gaph="15" data-gapv="15">
-                                        <div id="projects" class="cbp">
-                                            {% for item in feedback %}
-                                            <div class="cbp-item">
-                                                <div class="project-item">
-                                                    <div class="inner">
-                                                        <div class="grid">
-                                                            {% for i in item.file.all %}
-                                                                <figure class="effect-sadie" style="height: 420px; margin-top: -58px; margin-left: -3px;">
-                                                                <a target="_blank" href="/media/{{ i.file }}">
-                                                                    <object><embed src="/media/{{ i.file }}" alt="image" width=300px; height=600px;" /></object>
-                                                                    <figcaption>
-                                                                        <div>
-                                                                            <h2></h2>
-                                                                            <p style="color: whitesmoke;">{{ i.alt_desc }}</p>
-                                                                        </div>
-                                                                    </figcaption>
-                                                                </a>
-                                                                </figure>
-                                                                {% endfor %}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div><!--/.cbp-item -->
-                                            {% endfor %}
-                                        </div><!-- /#projects -->
-                                    </div><!--/.wprt-project -->
-                                </div><!-- /.col-md-12 -->
-                            {% endif %}
-
 <!--ДОКУМЕНТАЦИЯ О ПРОДУКТЕ-->
                             {% if documents or researches %}
                                 <div class="col-md-12">
@@ -276,8 +231,8 @@
                                         <div class="wprt-toggle style-1">
                                             <h3 class="toggle-title">{{ item.name }}</h3>
                                             <div class="toggle-content" style="color: black;">
+                                                {{ item.description }}
                                                 {% for i in item.file.all %}
-                                                    {{ item.description }}
                                                     <div class="wprt-spacer" data-desktop="10" data-mobi="10"
                                                          data-smobi="10"></div>
                                                     <a class="wprt-button small rounded-30px" href="/media/{{ i.file }}"
@@ -293,8 +248,8 @@
                                         <div class="wprt-toggle style-2">
                                             <h3 class="toggle-title">{{ item.name }}</h3>
                                             <div class="toggle-content" style="color: black;">
+                                                {{ item.description }}
                                                 {% for i in item.file.all %}
-                                                    {{ item.description }}
                                                     <div class="wprt-spacer" data-desktop="10" data-mobi="10"
                                                          data-smobi="10">
 

@@ -7,8 +7,6 @@ from django.urls import reverse_lazy
 from productsapp.forms import ProductUpdateForm, ProductForm, TechSolHasServiceForm, ProductWorkForm
 from django.views.generic import ListView, DetailView
 from productsapp.models import TechnicalSolutions, TechnicalSolutionsHasService, ProductWork
-from researchapp.models import Document
-from servicesapp.models import Service
 
 
 class ProductsView(ListView):
@@ -57,38 +55,9 @@ class ProductRead(DetailView):
         return context
 
 
-# def product(request, slug):
-#     item = get_object_or_404(TechnicalSolutions, slug=slug)
-#     docs = Document.objects.filter(techsol__pk=item.pk)
-#     publications = docs.filter(type_id=5)
-#     researches = docs.filter(type__in=(2, 3,))
-#     documents = docs.filter(type__id=1)
-#     product_services = Service.objects.filter(technicalsolutionshasservice__technicalsolutions__slug=slug)
-#     feedback = docs.filter(type__id=4).order_by('pk')
-#     if request.user.is_staff:
-#         projects = item.get_projects()
-#     else:
-#         projects = item.get_active_projects()
-#
-#     content = {
-#         'projects': projects,
-#         'works': item.get_works(),
-#         'materials': item.get_materials(),
-#         'page_title': item,
-#         'bred_title': item,
-#         'product': item,
-#         'researches': researches,
-#         'documents': documents,
-#         'feedback': feedback,
-#         'publications': publications,
-#         'product_services': product_services,
-#     }
-#     return render(request, 'productsapp/product.html', content)
-
-
 @user_passes_test(lambda u: u.is_superuser)
-def product_update(request, slug):
-    product = get_object_or_404(TechnicalSolutions, slug=slug)
+def product_update(request, pk):
+    product = get_object_or_404(TechnicalSolutions, pk=pk)
     product_form = ProductUpdateForm(instance=product)
     if request.method == 'POST':
         product_form = ProductUpdateForm(request.POST, request.FILES, instance=product)
@@ -105,10 +74,11 @@ def product_update(request, slug):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def product_service_update(request, slug):
-    product = get_object_or_404(TechnicalSolutions, slug=slug)
+def product_service_update(request, pk):
+    product = get_object_or_404(TechnicalSolutions, pk=pk)
     product_form = ProductForm(instance=product)
-    product_formset = inlineformset_factory(TechnicalSolutions, TechnicalSolutionsHasService, form=TechSolHasServiceForm,
+    product_formset = inlineformset_factory(TechnicalSolutions, TechnicalSolutionsHasService,
+                                            form=TechSolHasServiceForm,
                                             extra=1)
     formset = product_formset(instance=product)
     if request.method == 'POST':
@@ -132,8 +102,8 @@ def product_service_update(request, slug):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def product_work_update(request, slug):
-    product = get_object_or_404(TechnicalSolutions, slug=slug)
+def product_work_update(request, pk):
+    product = get_object_or_404(TechnicalSolutions, pk=pk)
     product_form = ProductForm(instance=product)
     product_formset = inlineformset_factory(TechnicalSolutions, ProductWork, form=ProductWorkForm,
                                             extra=1)
