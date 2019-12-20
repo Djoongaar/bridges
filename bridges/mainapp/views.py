@@ -6,7 +6,7 @@ from projectsapp.models import Project
 
 def index(request):
     latest_projects = Project.objects.all().order_by('-updated')[:6]
-    products = TechnicalSolutions.objects.all().order_by('pk')
+    products = TechnicalSolutions.objects.all()
     context = {
         'latest_projects': latest_projects,
         'products': products,
