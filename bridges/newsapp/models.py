@@ -33,7 +33,7 @@ class News(models.Model):
     status = models.CharField(verbose_name='статус', max_length=20, choices=NEWS_STATUS_CHOICES, default=FORMING)
 
     def get_absolute_url(self):
-        return reverse('news:news_detail', args=[str(self.id)])
+        return reverse('news:news_detail', args=[str(self.pk)])
 
     class Meta:
         ordering = ('-updated',)

@@ -129,15 +129,15 @@
                                             <div class="cbp-item">
                                                 <div class="service-item clearfix">
                                                     <div class="thumb">
-                                                        <a href="{% url 'products:product' item.slug %}"><img
+                                                        <a href="{% url 'products:product' item.pk %}"><img
                                                                 src='/media/{{ item.image | default:"products_images/default.jpg" }}'
                                                                 alt="image"/></a></div>
                                                     <div class="service-item-wrap">
                                                         <i><h6 class="title font-size-15"><a
-                                                                href="{% url 'products:product' item.slug %}">{{ item.name }}</a>
+                                                                href="{% url 'products:product' item.pk %}">{{ item.name }}</a>
                                                         </h6></i>
                                                         <p class="desc">{{ item.short_desc | truncatechars:100 }}</p>
-                                                        <a href="{% url 'products:product' item.slug %}"
+                                                        <a href="{% url 'products:product' item.pk %}"
                                                            class="wprt-button small">ПОДРОБНО</a>
                                                     </div>
                                                 </div>

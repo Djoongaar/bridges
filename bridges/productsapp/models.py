@@ -63,7 +63,7 @@ class TechnicalSolutions(models.Model):
     is_active = models.BooleanField(verbose_name='активен', default=False)
 
     def get_absolute_url(self):
-        return reverse('products:product', args=[str(self.slug)])
+        return reverse('products:product', args=[str(self.pk)])
 
     def get_items(self):
         """Выводит все экземпляры класса"""

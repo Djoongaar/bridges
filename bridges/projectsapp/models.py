@@ -52,7 +52,7 @@ class Project(models.Model):
     is_active = models.BooleanField(verbose_name='активен', default=False)
 
     def get_absolute_url(self):
-        return reverse('projects:project', args=[str(self.id)])
+        return reverse('projects:project', args=[str(self.pk)])
 
     def get_absolute_discuss_url(self):
         return reverse('projects:project_discuss_items', args=[str(self.id)])
