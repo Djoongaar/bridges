@@ -57,8 +57,8 @@ class Document(models.Model):
     """
     name = models.CharField(verbose_name='название документа', max_length=128, unique=True)
     description = models.TextField(verbose_name='описание', blank=True)
-    type = models.ForeignKey(DocumentCategory, verbose_name='категория документа', blank=True, null=True, default=None,
-                             on_delete=models.CASCADE)
+    type = models.ForeignKey(DocumentCategory, db_index=True, verbose_name='категория документа', blank=True, null=True,
+                             default=None, on_delete=models.CASCADE)
     subject = models.ManyToManyField(SubjectOfStudy, verbose_name='предмет исседования', blank=True)
     company = models.ManyToManyField(Company, verbose_name='компания выпустившая документ', blank=True)
     author = models.ManyToManyField(Users, verbose_name='автор документа', blank=True)

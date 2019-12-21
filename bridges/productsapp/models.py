@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from imagekit.models import ProcessedImageField
 from pilkit.processors import ResizeToFill
 
@@ -90,8 +91,18 @@ class TechnicalSolutions(models.Model):
     def get_materials(self):
         return self.materials.select_related().order_by('pk')
 
-    def get_docs(self):
+    @cached_property
+    def get_docs_cached(self):
         return self.docs.select_related()
+
+    def get_researches(self):
+        return self.get_docs_cached.filter(type__in=(2, 3,))
+
+    def get_documents(self):
+        return self.get_docs_cached.filter(type__in=(1, 4,))
+
+    def get_publications(self):
+        return self.get_docs_cached.filter(type__id=5)
 
     class Meta:
         verbose_name = 'Техническое решение'

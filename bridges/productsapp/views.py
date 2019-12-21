@@ -36,21 +36,17 @@ class ProductRead(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductRead, self).get_context_data(**kwargs)
         product = self.object
-        docs = product.get_docs()
-        publications = docs.filter(type_id=5)
-        researches = docs.filter(type__in=(2, 3,))
-        documents = docs.filter(type__in=(1, 4,))
         if self.request.user.is_staff:
-            projects = product.get_projects()
+            projects = product.get_projects
         else:
-            projects = product.get_active_projects()
+            projects = product.get_active_projects
         context.update({'page_title': product,
                         'bred_title': product,
                         'projects': projects,
-                        'publications': publications,
-                        'researches': researches,
-                        'documents': documents,
-                        'materials': product.get_materials(),
+                        'publications': product.get_publications,
+                        'researches': product.get_researches,
+                        'documents': product.get_documents,
+                        'materials': product.get_materials,
                         })
         return context
 
