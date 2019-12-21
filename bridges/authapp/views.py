@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.forms import inlineformset_factory, modelformset_factory
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.cache import cache_page
 from guardian.decorators import permission_required, permission_required_or_403
 from guardian.shortcuts import assign_perm
 
@@ -21,6 +22,7 @@ def get_inactive_users(request):
 
 
 @login_required
+@cache_page(3600)
 def restricted_area(request):
     user = get_object_or_404(Users, pk=request.user.pk)
     user_companies = CompanyUsers.objects.filter(user_id=user.pk, works=True)
@@ -68,6 +70,7 @@ def register(request):
     return render(request, 'authapp/register.html', {'form': user_form})
 
 
+@cache_page(3600)
 def user_profile(request, pk):
     user = get_object_or_404(Users, pk=pk)
     if request.user.pk == user.pk:
