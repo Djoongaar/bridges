@@ -1,8 +1,10 @@
+from django.core.cache import cache
 from django.db import models
 from django.utils.functional import cached_property
 from imagekit.models import ProcessedImageField
 from pilkit.processors import ResizeToFill
 
+from bridges import settings
 from servicesapp.models import Service
 # --------------------------------   МОДЕЛИ ЕДИНИЦ ИЗМЕРЕНИЙ  -------------------------------------
 from django.urls import reverse
@@ -96,13 +98,37 @@ class TechnicalSolutions(models.Model):
         return self.docs.select_related()
 
     def get_researches(self):
-        return self.get_docs_cached.filter(type__in=(2, 3,))
+        if settings.LOW_CACHE:
+            key = 'researches'
+            researches = cache.get(key)
+            if researches is None:
+                researches = self.get_docs_cached.filter(type__in=(2, 3,))
+                cache.set(key, researches)
+            return researches
+        else:
+            return self.get_docs_cached.filter(type__in=(2, 3,))
 
     def get_documents(self):
-        return self.get_docs_cached.filter(type__in=(1, 4,))
+        if settings.LOW_CACHE:
+            key = 'documents'
+            documents = cache.get(key)
+            if documents is None:
+                documents = self.get_docs_cached.filter(type__in=(1, 4,))
+                cache.set(key, documents)
+            return documents
+        else:
+            return self.get_docs_cached.filter(type__in=(1, 4,))
 
     def get_publications(self):
-        return self.get_docs_cached.filter(type__id=5)
+        if settings.LOW_CACHE:
+            key = 'publications'
+            publications = cache.get(key)
+            if publications is None:
+                publications = self.get_docs_cached.filter(type__id=5)
+                cache.set(key, publications)
+            return publications
+        else:
+            return self.get_docs_cached.filter(type__id=5)
 
     class Meta:
         verbose_name = 'Техническое решение'

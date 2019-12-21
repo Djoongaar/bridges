@@ -3,6 +3,8 @@ from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from productsapp.forms import ProductUpdateForm, ProductForm, TechSolHasServiceForm, ProductWorkForm
 from django.views.generic import ListView, DetailView
@@ -21,6 +23,7 @@ class ProductsView(ListView):
         return TechnicalSolutions.objects.all().order_by('pk').filter(is_active=True)
 
 
+@method_decorator(cache_page(3600), name='dispatch')
 class ProductRead(DetailView):
     model = TechnicalSolutions
     extra_context = {}
