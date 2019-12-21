@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.db.models import Q
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from guardian.decorators import permission_required_or_403
 from projectsapp.utils import CreateMixin, DeleteMixin
 from .forms import *
@@ -18,6 +20,7 @@ from django.urls import reverse_lazy
 #  ------------------------------------ PROJECT'S CRUD ----------------------------------------------
 
 
+@method_decorator(cache_page(3600), name='dispatch')
 class ProjectsList(ListView):
     """docstring for ProductList"""
     paginate_by = 6
@@ -43,6 +46,7 @@ class ProjectsList(ListView):
         return context
 
 
+@method_decorator(cache_page(3600), name='dispatch')
 class ProjectRead(DetailView):
     model = Project
     extra_context = {}    

@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView
 from productsapp.models import TechnicalSolutions, TechnicalSolutionsHasService, ProductWork
 
 
+@method_decorator(cache_page(3600), name='dispatch')
 class ProductsView(ListView):
     template_name = 'productsapp/products.html'
     context_object_name = 'all_products'
