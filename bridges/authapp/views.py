@@ -22,7 +22,6 @@ def get_inactive_users(request):
 
 
 @login_required
-@cache_page(3600)
 def restricted_area(request):
     user = get_object_or_404(Users, pk=request.user.pk)
     user_companies = CompanyUsers.objects.filter(user_id=user.pk, works=True)
