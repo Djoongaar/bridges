@@ -39,7 +39,8 @@ class Project(models.Model):
     slug = models.SlugField(verbose_name='слаг', max_length=128, blank=True)
     description = models.TextField(verbose_name='описание', blank=True)
     image = ProcessedImageField(verbose_name='Аватар', upload_to='projects_images/avatars',
-                                processors=[ResizeToFill(530, 530)], default='users/avatar/no_avatar.png', blank=True)
+                                processors=[ResizeToFill(530, 530)],
+                                default='projects_images/avatars/default_bridge.png')
     # image = models.ImageField(verbose_name='Аватар', upload_to='projects_images/avatars',
     #                           default='users/avatar/no_avatar.png', blank=True)
     status = models.CharField(verbose_name='Статус', max_length=24, choices=STATUS_CHOICES)

@@ -20,7 +20,6 @@ from django.urls import reverse_lazy
 #  ------------------------------------ PROJECT'S CRUD ----------------------------------------------
 
 
-@method_decorator(cache_page(3600), name='dispatch')
 class ProjectsList(ListView):
     """docstring for ProductList"""
     paginate_by = 6
@@ -46,7 +45,6 @@ class ProjectsList(ListView):
         return context
 
 
-@method_decorator(cache_page(3600), name='dispatch')
 class ProjectRead(DetailView):
     model = Project
     extra_context = {}    
@@ -84,6 +82,7 @@ def project_update(request, pk):
             project_form = ProjectUpdateForm(request.POST, request.FILES, instance=project)
             if project_form.is_valid():
                 project_form.save()
+                print(request.POST)
                 return HttpResponseRedirect(project.get_absolute_url())
         context = {
             'project_form': project_form,
