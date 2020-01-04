@@ -1,72 +1,7 @@
-<!DOCTYPE html>
+{% extends 'productsapp/base.html' %}
 {% load static %}
-<!--[if IE 8 ]>
-<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"><!--<![endif]-->
-<head>
-    <!-- Basic Page Needs -->
-    <meta charset="utf-8">
-    <!--[if IE]>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
-    <title>Регистрация пользователя</title>
+{% block content-container %}
 
-    <meta name="description"
-          content="Template built for Construction Company, Building Services, Architecture, Engineering, Cleaning Service and other Construction related services">
-    <meta name="keywords"
-          content=" architecture, builder, building, building company, cleaning services, construction, construction business, construction company">
-    <meta name="author" content="blogwp.com">
-
-    <!-- Mobile Specific Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    <!-- Theme Style -->
-    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
-
-    <!-- Favicon and touch icons  -->
-    <link rel="shortcut icon" href="{% static 'assets/icon/favicon.png' %}">
-    <link rel="apple-touch-icon-precomposed" href="{% static 'assets/icon/apple-touch-icon-158-precomposed.png' %}">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-
-<body class="front-page no-sidebar site-layout-full-width header-style-5 menu-has-search menu-has-cart">
-
-<div id="wrapper" class="animsition">
-    <div id="page" class="clearfix">
-
-        <div id="site-header-wrap">
-
-            <!-- Top Bar -->
-            {% include 'mainapp/includes/inc__top_bar.html' %}
-            <!-- /#top-bar -->
-
-            <!-- Header -->
-            {% include 'productsapp/includes/inc__header.html' %}
-            <!--    -->
-            <!-- /#site-header-wrap -->
-            <!-- Featured Title -->
-            <div id="featured-title" class="clearfix featured-title-left" style="height: 80px;">
-                <div id="featured-title-inner" class="container clearfix" style=" height: 60px;">
-                    <div class="featured-title-inner-wrap" style="padding: 25px 0">
-                        <div class="featured-title-heading-wrap">
-                            <h1 class="featured-title-heading" style="font-size: 16px;">
-                                {% block page_title %}{{ page_title }}{% endblock %}</h1>
-                        </div>
-                        <div id="breadcrumbs">
-                            <div class="breadcrumbs-inner">
-                                <div class="breadcrumb-trail">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- Main Content -->
             <div id="main-content" class="site-main clearfix">
                 <div id="content-wrap">
@@ -77,21 +12,20 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <!--div class="col-md-12"-->
+                                                <!--div class="col-md-8"-->
                                                 <div class="wprt-spacer" data-desktop="40" data-mobi="20"
                                                      data-smobi="20"></div>
-
-                                                <h2>Создание аккаунта</h2>
-                                                <p class="n_text">Для регистрации заполните форму:</p>
                                                 <form action="." method="post">
-                                                    {% csrf_token %}
-                                                    {{ form.as_p }}
+                                                    <div class="wprt-contact-form-1">
+                                                        {% csrf_token %}
+                                                        {{ form.username }}
+                                                        {{ form.phone }}
+                                                        {{ form.password }}
+                                                        {{ form.password2 }}
+                                                    </div>
                                                     <p><input type="submit" value="Создать аккаунт"></p>
                                                 </form>
-
-
                                             </div>
-                                            <!-- /.col-md-12 -->
                                         </div><!-- /.row -->
                                     </div><!-- /.container -->
                                 </section>
@@ -100,40 +34,11 @@
                     </div>
                 </div>
             </div>
+<script>
+    $(document).ready(function () {
+        $('#id_phone').mask("+7(999)999-99-99");
+        $("#id_email").inputmask("email")
+    });
+</script>
 
-            <!-- Footer -->
-            {% include 'mainapp/includes/inc__footer.html' %}
-
-            <!-- Bottom -->
-            {% include 'mainapp/includes/inc__bottom.html' %}
-        </div>
-        <!-- /#page -->
-    </div>
-    <!-- /#wrapper -->
-    <a id="scroll-top"></a>
-
-    <!-- Javascript -->
-    <script type="text/javascript" src="{% static 'assets/js/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/jquery.maskedinput.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/inputmask.js' %}"></script>
-
-    <script type="text/javascript" src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/animsition.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/plugins.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/countTo.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/fitText.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/flexslider.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/vegas.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/cube.portfolio.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/main.js' %}"></script>
-    <script type="text/javascript" src="{% static 'assets/js/validate.js' %}"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('#id_phone').mask("+7(999)999-99-99");
-            $("#id_email").inputmask("email")
-        });
-    </script>
-</div>
-</body>
-</html>
+{% endblock %}

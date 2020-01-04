@@ -4,8 +4,22 @@ from .models import *
 
 
 class RegisterUserForm(forms.ModelForm):
-    password = forms.CharField(label='Введите пароль', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Повторно введите пароль', widget=forms.PasswordInput)
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': "Логин *",
+        'tabindex': "1"
+    }))
+    phone = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': "Моб. телефон *",
+        'tabindex': "2"
+    }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': "Пароль *",
+        'tabindex': "3"
+    }))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': "Повторите пароль *",
+        'tabindex': "4"
+    }))
 
     class Meta:
         model = Users
