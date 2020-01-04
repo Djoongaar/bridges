@@ -3,7 +3,7 @@
 {% block content-container %}
     <div class="container">
 
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" value="добавить" class="wprt-button icon-flash confirm-button">

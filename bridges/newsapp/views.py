@@ -63,7 +63,10 @@ class NewsCreateView(LoginRequiredMixin, CreateView):
     model = News
     fields = '__all__'
     template_name = 'newsapp/newscreate_form.html'
-    extra_context = {}
+    extra_context = {
+        'page_title': 'Новая статья',
+        'bred_title': 'Новая статья'
+    }
 
     def get_initial(self):
         initial = super(NewsCreateView, self).get_initial()
@@ -74,17 +77,23 @@ class NewsCreateView(LoginRequiredMixin, CreateView):
 class NewsUpdateView(PermissionRequiredMixin, UpdateView):
     """docstring for ProductList"""    
     model = News
+    fields = '__all__'
+    permission_required = 'news.can_change'
 
-    template_name = 'newsapp/blog.html'
+    template_name = 'newsapp/newscreate_form.html'
     extra_context = {}
 
 
 class NewsDeleteView(PermissionRequiredMixin, DeleteView):
     """docstring for ProductList"""    
     model = News
-
-    template_name = 'newsapp/blog.html'
-    extra_context = {}
+    permission_required = 'news.can_delete'
+    success_url = reverse_lazy('news:news_list')
+    template_name = 'newsapp/news_confirm_delete.html'
+    extra_context = {
+        'page_title': 'Удалить новость',
+        'bred_title': 'Удалить новость'
+    }
 
 
 # ==================   В этом классе выходит ошибка Integrity Error ======================

@@ -1,0 +1,19 @@
+{% extends 'productsapp/base.html' %}
+{% load static %}
+{% block content-container %}
+    <div style="height: 50px;"></div>
+    <div class="container">
+
+        <form method="post">
+            {% csrf_token %}
+            <p>Вы уверены, что хотите удалить {{ obj }}?</p>
+            <button type="submit" value="Confirm" class="wprt-button icon-flash delete-button">
+                УДАЛИТЬ
+            </button>
+            <a href="{{ news.get_absolute_url }}" class="wprt-button small">
+                ВЕРНУТЬСЯ
+            </a>
+        </form>
+        <div class="wprt-spacer" data-desktop="20" data-mobi="20" data-smobi="20"></div>
+    </div>
+{% endblock %}
