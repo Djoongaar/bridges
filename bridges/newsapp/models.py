@@ -8,6 +8,10 @@ from productsapp.models import TechnicalSolutions
 from authapp.models import Users
 
 
+def image_upload_to(instance, filename):
+    return 'news_avatars/news_{0}/{1}'.format(instance.pk, filename)
+
+
 class News(models.Model):
     """ Модель новости"""
     DELETED = 'DELETED'
@@ -23,8 +27,9 @@ class News(models.Model):
     name = models.CharField(verbose_name='название', max_length=256, unique=True)
     slug = models.SlugField(verbose_name='слаг', max_length=128, unique=True)
     description = models.TextField(verbose_name='описание', blank=True)
-    image = ProcessedImageField(verbose_name='картинка новости', upload_to='news_avatars',
-                                processors=[ResizeToFill(370, 220)], default='news_avatars/no_news.jpg', blank=True)
+    image = ProcessedImageField(verbose_name='картинка новости', upload_to=image_upload_to,
+                                processors=[ResizeToFill(740, 440)], default='news_avatars/default_bridge.png',
+                                options={'quality': 90}, blank=True)
     # image = models.ImageField(verbose_name='картинка новости', upload_to='news_avatars',
     #                           default='news_avatars/no_news.jpg', blank=True)
     creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
