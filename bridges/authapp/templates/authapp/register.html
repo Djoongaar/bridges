@@ -1,7 +1,6 @@
 {% extends 'productsapp/base.html' %}
 {% load static %}
 {% block content-container %}
-
             <!-- Main Content -->
             <div id="main-content" class="site-main clearfix">
                 <div id="content-wrap">
@@ -23,7 +22,7 @@
                                                         {{ form.password }}
                                                         {{ form.password2 }}
                                                     </div>
-                                                    <p><input type="submit" value="Создать аккаунт"></p>
+                                                    <input type="submit" value="Создать аккаунт">
                                                 </form>
                                             </div>
                                         </div><!-- /.row -->
@@ -34,11 +33,5 @@
                     </div>
                 </div>
             </div>
-<script>
-    $(document).ready(function () {
-        $('#id_phone').mask("+7(999)999-99-99");
-        $("#id_email").inputmask("email")
-    });
-</script>
-
+    <script type="text/javascript" src="{% static 'assets/js/register.js' %}"></script>
 {% endblock %}

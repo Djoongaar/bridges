@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
+from django.contrib.auth.views import LoginView, PasswordResetView
 from django.db.models import Q
 from django.forms import inlineformset_factory, modelformset_factory
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.cache import cache_page
 from guardian.decorators import permission_required, permission_required_or_403
@@ -222,3 +223,51 @@ def company_user_list(request, pk):
         'bred_title': 'Список компаний пользователя'
     }
     return render(request, 'authapp/user_list.html', context)
+
+
+def check_username(request):
+    if request.method == 'GET':
+        new_username = request.GET['username']
+        user_names = Users.get_all_usernames()
+        if not new_username:
+            return HttpResponse("stay", content_type='text/html')
+        elif new_username in user_names:
+            return HttpResponse("no", content_type='text/html')
+        else:
+            return HttpResponse("ok", content_type='text/html')
+
+
+def check_phone(request):
+    if request.method == 'GET':
+        new_phone = f"+{request.GET['phone']}".replace(' ', '')
+        user_phones = Users.get_all_phones()
+        if new_phone == '+7(___)___-__-__':
+            return HttpResponse("stay", content_type='text/html')
+        elif new_phone in user_phones:
+            return HttpResponse("no", content_type='text/html')
+        else:
+            return HttpResponse("ok", content_type='text/html')
+
+
+def check_email(request):
+    if request.method == 'GET':
+        try_email = request.GET['email']
+        users_emails = Users.get_all_emails()
+        if not try_email:
+            return HttpResponse("stay", content_type='text/html')
+        elif try_email in users_emails:
+            return HttpResponse("ok", content_type='text/html')
+        else:
+            return HttpResponse("no", content_type='text/html')
+
+
+class MyLoginView(LoginView):
+    form_class = LoginForm
+
+
+class MyPasswordResetView(PasswordResetView):
+    form_class = MyPasswordResetForm
+    extra_context = {
+        'page_title': 'Сброс пароля',
+        'bred_title': 'Сброс пароля'
+    }

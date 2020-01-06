@@ -126,6 +126,27 @@ class Users(AbstractUser):
         else:
             return str(f"{self.last_name} {self.first_name}")
 
+    @staticmethod
+    def get_all_usernames():
+        users = []
+        for user in Users.objects.all():
+            users.append(user.username)
+        return users
+
+    @staticmethod
+    def get_all_phones():
+        phones = []
+        for user in Users.objects.all():
+            phones.append(user.phone)
+        return phones
+
+    @staticmethod
+    def get_all_emails():
+        emails = []
+        for user in Users.objects.all():
+            emails.append(user.email)
+        return emails
+
 
 def user_post_save(sender, instance, created, **kwargs):
     """
