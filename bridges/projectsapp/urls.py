@@ -18,7 +18,6 @@ urlpatterns = [
     path('manager/create/<int:project_pk>', projectsapp.ProjectsManagerCreateView.as_view(), name='manager_create'),
     path('manager/delete/<int:project_pk>/<int:pk>', projectsapp.ProjectsManagerDeleteView.as_view(), name='manager_delete'),
     path('gallery/update/<int:pk>', projectsapp.gallery_update, name='gallery_update'),
-    path('discuss/items/<int:pk>', projectsapp.project_discuss_items, name='project_discuss_items'),
     path('discuss/items/update/<int:comment_pk>', projectsapp.comment_update, name='comment_update'),
     path('discuss/items/delete/<int:project_pk>/<int:pk>', projectsapp.CommentDeleteView.as_view(), name='comment_delete'),
 ]

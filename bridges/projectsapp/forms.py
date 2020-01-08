@@ -3,8 +3,6 @@ from django.core.exceptions import NON_FIELD_ERRORS
 
 from .models import *
 
-from django.utils.safestring import mark_safe
-
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -13,6 +11,49 @@ class ProjectForm(forms.ModelForm):
 
 
 class ProjectUpdateForm(forms.ModelForm):
+    DEVELOPMENT = 'разработка'
+    EXPERTISE = 'экспертиза'
+    TENDER = 'аукцион'
+    EXECUTING = 'строительство'
+    FINISHING = 'сдача'
+    PAYMENT = 'выплата'
+    DONE = 'завершен'
+    STATUS_CHOICES = (
+        (DEVELOPMENT, 'Статус проекта: разработка'),
+        (EXPERTISE, 'Статус проекта: экспертиза'),
+        (TENDER, 'Статус проекта: аукцион'),
+        (EXECUTING, 'Статус проекта: строительство'),
+        (FINISHING, 'Статус проекта: сдача'),
+        (PAYMENT, 'Статус проекта: выплата'),
+        (DONE, 'Статус проекта: завершен'),
+    )
+    name = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': "Название проекта *",
+        'tabindex': "1"
+    }))
+    status = forms.ChoiceField(choices=STATUS_CHOICES, widget=forms.Select(attrs={
+        'placeholder': "Статус проекта *",
+        'style': 'color: grey; border: 1px solid #eaeaea;',
+        'tabindex': "2"
+    }))
+    city = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': "Город",
+        'tabindex': "3"
+    }))
+    coordinate = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'placeholder': "Координаты",
+        'tabindex': "4"
+    }))
+    description = forms.CharField(required=False, widget=forms.Textarea(attrs={
+        'placeholder': "Описание проекта",
+        'rows': '5',
+        'tabindex': "5"
+    }))
+    address = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'placeholder': "Адрес",
+        'tabindex': "5"
+    }))
+
     class Meta:
         model = Project
         fields = ['name', 'status', 'city', 'image', 'address', 'coordinate', 'description', 'is_active']
@@ -55,6 +96,12 @@ class ProjectSolutionsCreateForm(forms.ModelForm):
 
 
 class ProjectDiscussItemForm(forms.ModelForm):
+    comment = forms.CharField(widget=forms.Textarea(attrs={
+        'placeholder': "Ваш комментарий *",
+        'rows': '5',
+        'tabindex': "1"
+    }))
+
     class Meta:
         model = ProjectDiscussItem
         fields = ['project', 'user', 'comment']
@@ -63,44 +110,3 @@ class ProjectDiscussItemForm(forms.ModelForm):
                 'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
             }
         }
-
-
-# class ProjectManagerUpdateFormset(forms.models.BaseInlineFormSet):
-#     management_template = '<{tag} name="{prefix}-management_form">{form}</{tag}>'.format
-#     form_template = '<{tag} name="{prefix}-{index}-form">{form}</{tag}>'.format
-#     default_render = 'as_ul'
-#
-#     def add_fields(self, form, index):
-#         super(ProjectManagerUpdateFormset, self).add_fields(form, index)
-#         form.fields['DELETE'].widget.attrs['onchange'] = 'rowhidder(this);'
-#
-#     def render(self, **kwargs):
-#         forms = [self.render_management()]
-#         forms += [self.render_form(index, form, **kwargs) for index, form in enumerate(self)]
-#         return mark_safe(''.join(forms))
-#
-#     def render_form(self, index, form, **kwargs):
-#         tag = kwargs.setdefault('tag', 'table')
-#         method = kwargs.setdefault('method', f'as_{tag}')
-#         return self.form_template(index=index, form=getattr(form, method)(), prefix=self.prefix, **kwargs)
-#
-#     def as_table(self):
-#         "Returns this formset rendered as HTML <table></table>s."
-#         return self.render(tag='table')
-#
-#     def as_p(self):
-#         "Returns this formset rendered as HTML <div></div>s."
-#         return self.render(tag='div', method='as_p')
-#
-#     def as_ul(self):
-#         "Returns this formset rendered as HTML <ul></ul>s."
-#         return self.render(tag='ul')
-#
-#     def __str__(self):
-#         "Returns this formset rendered as self.default_render"
-#         return getattr(self, self.default_render, self.as_table)()
-#
-#     def render_management(self):
-#         return mark_safe(self.management_template(tag='fieldset', prefix=self.prefix, form=str(self.management_form)))
-
-

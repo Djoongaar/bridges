@@ -1,10 +1,6 @@
-from django.contrib.auth.decorators import user_passes_test, login_required
-from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from guardian.decorators import permission_required_or_403
 from projectsapp.utils import CreateMixin, DeleteMixin
 from .forms import *
 from projectsapp.models import ProjectImage, ProjectManagers
@@ -12,9 +8,7 @@ from django.views.generic import View
 from django.views.generic import ListView, DetailView, CreateView
 from projectsapp.models import Project, ProjectHasTechnicalSolutions, ProjectCompany
 from authapp.models import Users
-
 from django.http import HttpResponseRedirect, Http404
-
 from django.urls import reverse_lazy
 
 #  ------------------------------------ PROJECT'S CRUD ----------------------------------------------
@@ -45,29 +39,39 @@ class ProjectsList(ListView):
         return context
 
 
-class ProjectRead(DetailView):
-    model = Project
-    extra_context = {}    
-    not_empty_url = reverse_lazy('projects:project')
+class ProjectRead(View):
+    form_model = ProjectDiscussItem
+    form = ProjectDiscussItemForm
+    template = 'projectsapp/project_detail.html'
 
-    def get_queryset(self):
-        if self.request.user.is_staff:
-            return Project.objects.all()
-        else:
-            return Project.objects.filter(status__exact='завершен')
+    def get(self, request, pk):
+        project = Project.objects.get(pk=pk)
+        user = request.user
+        report_form = ProjectDiscussItemForm(initial={'project': project, 'user': user})
+        context = {
+            'form': report_form,
+            'object': project,
+            'page_title': 'Новый комментарий',
+            'bred_title': 'Комментарий'
+        }
+        return render(request, template_name=self.template, context=context)
 
-    def get_context_data(self, **kwargs):
-        context = super(ProjectRead, self).get_context_data(**kwargs)
-        context.update({'page_title': 'Детальная информация о проекте',
-                        'bred_title': 'Информация о проекте'
-                        })
-        return context
+    def post(self, request, pk):
+        project = Project.objects.get(pk=pk)
+        user = request.user
+        report_form = ProjectDiscussItemForm(data=request.POST)
+        if report_form.is_valid():
+            new_report_form = report_form.save(commit=False)
+            new_report_form.project = project
+            new_report_form.user = user
+            new_report_form.save()
+            return redirect(project.get_absolute_url())
 
 
 class ProjectCreateView(CreateView):
     model = Project
     form_class = ProjectUpdateForm
-    template_name = 'projectsapp/gallery_update.html'
+    template_name = 'projectsapp/project_create.html'
     extra_context = {
         'page_title': 'Создать новый проект',
         'bred_title': 'Новый проект'
@@ -77,20 +81,20 @@ class ProjectCreateView(CreateView):
 def project_update(request, pk):
     project = get_object_or_404(Project, pk=pk)
     if request.user.has_perm('change_project', project):
-        project_form = ProjectUpdateForm(instance=project)
+        form = ProjectUpdateForm(instance=project)
         if request.method == 'POST':
-            project_form = ProjectUpdateForm(request.POST, request.FILES, instance=project)
-            if project_form.is_valid():
-                project_form.save()
+            form = ProjectUpdateForm(request.POST, request.FILES, instance=project)
+            if form.is_valid():
+                form.save()
                 print(request.POST)
                 return HttpResponseRedirect(project.get_absolute_url())
         context = {
-            'project_form': project_form,
+            'form': form,
             'page_title': 'Редактирование основной информации',
             'bred_title': 'Обновление проекта',
             'project': project,
         }
-        return render(request, 'projectsapp/gallery_update.html', context)
+        return render(request, 'projectsapp/project_create.html', context)
     else:
         raise Http404
 
@@ -189,33 +193,6 @@ def gallery_update(request, pk):
 
 
 #  ------------------------------------ COMMENTS TO THE PROJECT crUd ---------------------------------------------
-
-@login_required
-def project_discuss_items(request, pk):
-    """ добавление сообщения """
-    project = Project.objects.get(pk=pk)
-    user = request.user
-    if request.method == 'POST':
-        report_form = ProjectDiscussItemForm(data=request.POST)
-        if report_form.is_valid():
-            new_report_form = report_form.save(commit=False)
-            new_report_form.project = project
-            new_report_form.user = user
-            new_report_form.save()
-            return redirect(project.get_absolute_url())
-    else:
-        report_form = ProjectDiscussItemForm(initial={
-            'project': project,
-            'user': user
-        })
-    context = {
-        'project': project,
-        'user': user,
-        'form': report_form,
-        'page_title': 'Комментарий',
-        'bred_title': 'Комментарии',
-    }
-    return render(request, 'projectsapp/project_discuss_detail.html', context)
 
 
 @login_required

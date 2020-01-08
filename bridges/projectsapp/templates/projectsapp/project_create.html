@@ -1,0 +1,26 @@
+{% extends 'productsapp/base.html' %}
+{% load static %}
+{% block content-container %}
+    <div style="height: 50px;"></div>
+    <div class="container">
+
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form.name }}</p>
+            <p>{{ form.status }}</p>
+            <p>{{ form.city }}</p>
+            <p>{{ form.coordinate }}</p>
+            <p>{{ form.description }}</p>
+            <p>{{ form.address }}</p>
+            <p>{{ form.image.label }} {{ form.image }}</p>
+{#            {{ form.as_p }}#}
+            <button type="submit" value="сохранить" class="wprt-button icon-flash confirm-button">
+                СОХРАНИТЬ
+            </button>
+            <a href="{{ project.get_absolute_url }}" class="wprt-button small cancel-button">
+                ВЕРНУТЬСЯ
+            </a>
+        </form>
+    </div>
+
+{% endblock %}

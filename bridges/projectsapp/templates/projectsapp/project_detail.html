@@ -98,6 +98,22 @@
                                             <div class="toggle-content">
                                                 <div id="project_managers">
                                                     <article class="hentry">
+                                                        {% if request.user.is_superuser %}
+                                                            <div class="post-meta style-2">
+                                                                <div class="post-meta-content">
+                                                                    <div class="post-meta-content-inner">
+                                                                        <span class="post-by-author item">
+                                                                            <span class="inner">
+                                                                                <a href="{% url 'projects:manager_create' object.pk %}" title="" rel="author">
+                                                                                <i class="fa fa-plus-square" style="color: #337ab7;"></i>
+                                                                                    <i> ... добавить менеджера на проект</i>
+                                                                                </a>
+                                                                            </span>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div><!-- /.post-meta -->
+                                                        {% endif %}
                                                         {% for item in object.get_managers %}
                                                             <div class="post-content-wrap">
                                                                 <div class="post-meta style-2" id="managers">
@@ -341,12 +357,21 @@
                                                     <p>На данный момент комментариев нет. Сделайте первый комментарий к этому объекту</p>
                                                 {% endif %}
                                             </ol><!-- /.comment-list -->
-                                            <a href="{% url 'projects:project_discuss_items' object.pk %}"
-                                               class="wprt-button small">
-                                                ПРОКОММЕНТИРОВАТЬ
-                                            </a>
                                         </div><!--/#comments -->
                                     </div>
+                                    <div class="col-md-12">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            {{ form.project }}
+                                            {{ form.user }}
+                                            {{ form.comment }}
+                                            <p></p>
+                                            <button type="submit" value="сохранить" class="wprt-button">
+                                                ПРОКОММЕНТИРОВАТЬ
+                                            </button>
+                                        </form>
+                                     <div class="wprt-spacer" data-desktop="60" data-mobi="60" data-smobi="60"></div>
+                                    </div><!-- /.col-md-12 -->
 
                                 </div> <!-- /.row -->
                             </div><!-- /.container -->
@@ -442,8 +467,13 @@
             myMap.geoObjects
                 .add(myPlacemark)
                 {% if object.coordinate %}
-                    .add({{ object.map_mark }})
+                    .add({{ object.map_mark }});
                 {% endif %}
         });
+        let inputAttrs = document.querySelectorAll('form select');
+        console.log(inputAttrs);
+        for (let i = 0; i < inputAttrs.length; i++) {
+            inputAttrs[i].setAttribute('style', 'display:none;')
+        }
     </script>
 {% endblock %}

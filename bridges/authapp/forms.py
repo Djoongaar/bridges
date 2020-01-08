@@ -79,6 +79,7 @@ class UsersForEditProfileForm(forms.ModelForm):
 
 
 class UsersSelfEditProfileForm(forms.ModelForm):
+    # birthday
     class Meta:
         model = Users
         fields = [
