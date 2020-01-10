@@ -5,7 +5,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from projectsapp.serializers import ProjectDetailSerializer, ProjectListSerializer, ProjectCommentSerializer
+from projectsapp.serializers import ProjectDetailSerializer, ProjectListSerializer, ProjectCommentSerializer, \
+    CommentCreateSerializer
 from projectsapp.utils import CreateMixin, DeleteMixin
 from .forms import *
 from projectsapp.models import ProjectImage, ProjectManagers
@@ -286,6 +287,9 @@ class ProjectCreateAPI(generics.CreateAPIView):
     serializer_class = ProjectDetailSerializer
     permission_classes = (IsAuthenticated, )
 
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
 
 class ProjectUpdateDestroyAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProjectDetailSerializer
@@ -311,5 +315,5 @@ class CommentListAPI(generics.ListAPIView):
 
 
 class CommentCreateAPI(generics.CreateAPIView):
-    serializer_class = ProjectCommentSerializer
+    serializer_class = CommentCreateSerializer
     permission_classes = (IsAuthenticated,)
