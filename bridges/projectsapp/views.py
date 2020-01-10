@@ -1,15 +1,19 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+
+from projectsapp.serializers import ProjectDetailSerializer, ProjectListSerializer, ProjectCommentSerializer
 from projectsapp.utils import CreateMixin, DeleteMixin
 from .forms import *
 from projectsapp.models import ProjectImage, ProjectManagers
 from django.views.generic import View
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, CreateView
 from projectsapp.models import Project, ProjectHasTechnicalSolutions, ProjectCompany
 from authapp.models import Users
 from django.http import HttpResponseRedirect, Http404
-from django.urls import reverse_lazy
 
 #  ------------------------------------ PROJECT'S CRUD ----------------------------------------------
 
@@ -51,8 +55,8 @@ class ProjectRead(View):
         context = {
             'form': report_form,
             'object': project,
-            'page_title': 'Новый комментарий',
-            'bred_title': 'Комментарий'
+            'page_title': 'Информация о проекте',
+            'bred_title': 'О проекте'
         }
         return render(request, template_name=self.template, context=context)
 
@@ -229,3 +233,83 @@ class CommentDeleteView(DeleteMixin, View):
     template = 'projectsapp/projectitems_confirm_delete.html'
     page_title = 'Удаление комментария'
     bred_title = 'Комментарий'
+
+
+#  ------------------------------------ REST FRAMEWORK API ---------------------------------------------
+
+
+class ProjectListAPI(generics.ListAPIView):
+    serializer_class = ProjectListSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+        if user.is_superuser:
+            return Project.objects.all()
+        elif user.is_authenticated:
+            projects = self.request.user.get_projects()
+            users_projects = [i.project.pk for i in projects]
+            return Project.objects.filter(
+                Q(status__iexact="завершен") |
+                Q(pk__in=users_projects)
+            )
+        else:
+            return Project.objects.filter(
+                Q(status__iexact="завершен"),
+                Q(is_active=True)
+            )
+
+
+class ProjectDetailAPI(generics.RetrieveAPIView):
+    serializer_class = ProjectDetailSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+        if user.is_superuser:
+            return Project.objects.all()
+        elif user.is_authenticated:
+            projects = user.get_projects()
+            users_projects = [i.project.pk for i in projects]
+            return Project.objects.filter(
+                Q(status__iexact="завершен") |
+                Q(pk__in=users_projects)
+            )
+        else:
+            return Project.objects.filter(
+                Q(status__iexact="завершен"),
+                Q(is_active=True)
+            )
+
+
+class ProjectCreateAPI(generics.CreateAPIView):
+    serializer_class = ProjectDetailSerializer
+    permission_classes = (IsAuthenticated, )
+
+
+class ProjectUpdateDestroyAPI(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProjectDetailSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+        if user.is_superuser:
+            return Project.objects.all()
+        else:
+            projects = user.get_projects()
+            users_projects = [i.project.pk for i in projects]
+            return Project.objects.filter(pk__in=users_projects)
+
+
+class CommentListAPI(generics.ListAPIView):
+    serializer_class = ProjectCommentSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return ProjectDiscussItem.objects.filter(project__pk=self.kwargs['pk'])
+
+
+class CommentCreateAPI(generics.CreateAPIView):
+    serializer_class = ProjectCommentSerializer
+    permission_classes = (IsAuthenticated,)

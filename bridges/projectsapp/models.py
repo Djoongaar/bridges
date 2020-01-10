@@ -142,7 +142,6 @@ class ProjectHasTechnicalSolutions(models.Model):
         return self.techsol.name
 
 
-# СВЯЗАНО
 class ProjectCompany(models.Model):
     """ Модель связи компаний на объекте """
     DESIGNER = 'проектировщик'
@@ -210,7 +209,8 @@ class ProjectManagers(models.Model):
     )
     project = models.ForeignKey(Project, verbose_name='проект', on_delete=models.CASCADE, related_name="managers", default=0)
     role = models.CharField(verbose_name='роль в проекте', max_length=24, choices=STATUS_CHOICES)
-    manager = models.ForeignKey(Users, verbose_name='Участники', on_delete=models.CASCADE, default=None)
+    manager = models.ForeignKey(Users, verbose_name='Участники', on_delete=models.CASCADE, default=None,
+                                related_name='projects')
     description = models.TextField(verbose_name='комментарий', blank=True)
     is_active = models.BooleanField(verbose_name='Активный', default=True)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
