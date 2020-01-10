@@ -116,6 +116,9 @@ class Users(AbstractUser):
     def get_company(self):
         return self.company.select_related()
 
+    def get_projects(self):
+        return self.projects.select_related()
+
     # def get_last_login(self):
     #     login_l = datetime.datetime.now() - self.last_login
     #     if login_l < 600:
