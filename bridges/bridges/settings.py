@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'social_django',
     'debug_toolbar',
     'template_profiler_panel',
+    'rest_framework'
 ]
 # ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 SITE_ID = 1
