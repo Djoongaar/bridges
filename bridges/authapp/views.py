@@ -1,17 +1,13 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import Group
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.db.models import Q
-from django.forms import inlineformset_factory, modelformset_factory
+from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.cache import cache_page
-from guardian.decorators import permission_required, permission_required_or_403
-from guardian.shortcuts import assign_perm
 
 from newsapp.models import News
 from ordersapp.models import Order
-from django.views.generic import View, CreateView
 from .forms import *
 from .models import *
 
@@ -21,7 +17,7 @@ def get_inactive_users(request):
     inactive_users = Users.objects.filter(is_active=False)
     return inactive_users
 
-
+# ================================================== ЛИЧНЫЙ КАБИНЕТ ==================================================
 @login_required
 def restricted_area(request):
     user = get_object_or_404(Users, pk=request.user.pk)
@@ -56,6 +52,7 @@ def restricted_area(request):
     return render(request, 'authapp/restricted_area.html', context)
 
 
+# ================================================== РЕГИСТРАЦИЯ ==================================================
 def register(request):
     if request.method == 'POST':
         user_form = RegisterUserForm(request.POST)
@@ -79,6 +76,7 @@ def register(request):
     return render(request, 'authapp/register.html', context)
 
 
+# =============================================== ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ ===============================================
 @cache_page(3600)
 def user_profile(request, pk):
     user = get_object_or_404(Users, pk=pk)
@@ -225,6 +223,7 @@ def company_user_list(request, pk):
     return render(request, 'authapp/user_list.html', context)
 
 
+# ================================================== AJAX ВАЛИДАЦИЯ ==================================================
 def check_username(request):
     if request.method == 'GET':
         new_username = request.GET['username']
@@ -261,10 +260,12 @@ def check_email(request):
             return HttpResponse("no", content_type='text/html')
 
 
+# ================================================== ВХОД В ЛК ==================================================
 class MyLoginView(LoginView):
     form_class = LoginForm
 
 
+# ================================================== СБРОС ПАРОЛЯ ==================================================
 class MyPasswordResetView(PasswordResetView):
     form_class = MyPasswordResetForm
     extra_context = {
