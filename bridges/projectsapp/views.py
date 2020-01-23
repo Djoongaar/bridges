@@ -19,6 +19,10 @@ from django.http import HttpResponseRedirect, Http404
 #  ------------------------------------ PROJECT'S CRUD ----------------------------------------------
 
 
+def projects_list_view(request):
+    return render(request, 'projectsapp/main.html')
+
+
 class ProjectsList(ListView):
     """docstring for ProductList"""
     paginate_by = 6

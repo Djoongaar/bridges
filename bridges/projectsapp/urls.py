@@ -11,6 +11,7 @@ app_name = 'projectsapp'
 
 urlpatterns = [
     path('', ProjectsList.as_view(), name='projects'),
+    path('projects_list', projectsapp.projects_list_view),
     path('<int:pk>/', ProjectRead.as_view(), name='project'),
     path('create/', ProjectCreateView.as_view(), name='project_create'),
     path('update/<int:pk>/', projectsapp.project_update, name='project_update'),
