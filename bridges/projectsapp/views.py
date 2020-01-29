@@ -249,20 +249,21 @@ class ProjectListAPI(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         print(user)
-        if user.is_superuser:
-            return Project.objects.all()
-        elif user.is_authenticated:
-            projects = self.request.user.get_projects()
-            users_projects = [i.project.pk for i in projects]
-            return Project.objects.filter(
-                Q(status__iexact="завершен") |
-                Q(pk__in=users_projects)
-            )
-        else:
-            return Project.objects.filter(
-                Q(status__iexact="завершен"),
-                Q(is_active=True)
-            )
+        return Project.objects.all()
+        # if user.is_superuser:
+        #     return Project.objects.all()
+        # elif user.is_authenticated:
+        #     projects = self.request.user.get_projects()
+        #     users_projects = [i.project.pk for i in projects]
+        #     return Project.objects.filter(
+        #         Q(status__iexact="завершен") |
+        #         Q(pk__in=users_projects)
+        #     )
+        # else:
+        #     return Project.objects.filter(
+        #         Q(status__iexact="завершен"),
+        #         Q(is_active=True)
+        #     )
 
 
 class ProjectDetailAPI(generics.RetrieveAPIView):
@@ -271,20 +272,21 @@ class ProjectDetailAPI(generics.RetrieveAPIView):
     def get_queryset(self):
         user = self.request.user
         print(user)
-        if user.is_superuser:
-            return Project.objects.all()
-        elif user.is_authenticated:
-            projects = user.get_projects()
-            users_projects = [i.project.pk for i in projects]
-            return Project.objects.filter(
-                Q(status__iexact="завершен") |
-                Q(pk__in=users_projects)
-            )
-        else:
-            return Project.objects.filter(
-                Q(status__iexact="завершен"),
-                Q(is_active=True)
-            )
+        return Project.objects.all()
+        # if user.is_superuser:
+        #     return Project.objects.all()
+        # elif user.is_authenticated:
+        #     projects = user.get_projects()
+        #     users_projects = [i.project.pk for i in projects]
+        #     return Project.objects.filter(
+        #         Q(status__iexact="завершен") |
+        #         Q(pk__in=users_projects)
+        #     )
+        # else:
+        #     return Project.objects.filter(
+        #         Q(status__iexact="завершен"),
+        #         Q(is_active=True)
+        #     )
 
 
 class ProjectCreateAPI(generics.CreateAPIView):
