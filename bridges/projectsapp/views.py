@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from projectsapp.serializers import ProjectDetailSerializer, ProjectListSerializer, ProjectCommentSerializer, \
     CommentCreateSerializer
@@ -17,10 +17,6 @@ from authapp.models import Users
 from django.http import HttpResponseRedirect, Http404
 
 #  ------------------------------------ PROJECT'S CRUD ----------------------------------------------
-
-
-def projects_list_view(request):
-    return render(request, 'projectsapp/main.html')
 
 
 class ProjectsList(ListView):
@@ -323,3 +319,16 @@ class CommentListAPI(generics.ListAPIView):
 class CommentCreateAPI(generics.CreateAPIView):
     serializer_class = CommentCreateSerializer
     permission_classes = (IsAuthenticated,)
+
+
+class CommentUpdateDestroyAPI(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CommentCreateSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return ProjectDiscussItem.objects.all()
+        else:
+            return ProjectDiscussItem.objects.filter(user__pk=user.pk)
+

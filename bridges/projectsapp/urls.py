@@ -3,7 +3,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 from projectsapp import views as projectsapp
 from .views import ProjectsList, ProjectRead, ProjectCreateView, ProjectListAPI, ProjectCreateAPI, \
-    ProjectUpdateDestroyAPI, CommentListAPI, ProjectDetailAPI, CommentCreateAPI
+    ProjectUpdateDestroyAPI, CommentListAPI, ProjectDetailAPI, CommentCreateAPI, CommentUpdateDestroyAPI
 
 # from .views import ProjectsList, ProjectRead, ProductManagersUpdate
 
@@ -11,7 +11,6 @@ app_name = 'projectsapp'
 
 urlpatterns = [
     path('', ProjectsList.as_view(), name='projects'),
-    path('projects_list', projectsapp.projects_list_view),
     path('<int:pk>/', ProjectRead.as_view(), name='project'),
     path('create/', ProjectCreateView.as_view(), name='project_create'),
     path('update/<int:pk>/', projectsapp.project_update, name='project_update'),
@@ -32,6 +31,7 @@ urlpatterns = [
     path('api/v1/project/detail/<int:pk>/', ProjectDetailAPI.as_view()),
     path('api/v1/project/update/<int:pk>/comment/list/', CommentListAPI.as_view()),
     path('api/v1/project/update/<int:pk>/comment/create/', CommentCreateAPI.as_view()),
+    path('api/v1/project/update/comment/update/<int:pk>/', CommentUpdateDestroyAPI.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

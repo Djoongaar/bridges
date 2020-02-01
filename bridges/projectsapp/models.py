@@ -96,7 +96,7 @@ pre_save.connect(pre_save_map_mark, sender=Project)
 
 
 class ProjectDiscussItem(models.Model):
-    project = models.ForeignKey(Project, verbose_name='проект', related_name='comments', on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, verbose_name='проект', related_name='comments', on_delete=models.CASCADE, blank=True)
     user = models.ForeignKey(Users, verbose_name='участник обсуждения', on_delete=models.CASCADE)
     comment = models.TextField(verbose_name='добавить сообщение')
     creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
