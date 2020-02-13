@@ -119,6 +119,12 @@ class Users(AbstractUser):
     def get_projects(self):
         return self.projects.select_related()
 
+    def get_comments(self):
+        return self.users_comments.select_related()
+
+    def get_news(self):
+        return self.authors_news.select_related()
+
 
     # def get_last_login(self):
     #     login_l = datetime.datetime.now() - self.last_login

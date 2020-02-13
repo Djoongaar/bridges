@@ -8,10 +8,13 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic.base import View
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from authapp.models import Users
 from newsapp.forms import NewsDiscussItemForm, NewsForm
 from newsapp.models import News, NewsDiscussItem
+from newsapp.serializers import NewsListSerializer, NewsDetailSerializer, NewsCommentsSerializer
 from productsapp.models import TechnicalSolutions
 
 
@@ -128,3 +131,66 @@ class NewsCommentCreate(LoginRequiredMixin, View):
             obj.save()
             return HttpResponseRedirect(news.get_absolute_url())
         return HttpResponse(status=400)
+
+
+#  ------------------------------------ REST FRAMEWORK API ---------------------------------------------
+
+class NewsListAPI(generics.ListAPIView):
+    serializer_class = NewsListSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return News.objects.all()
+
+
+class NewsDetailAPI(generics.RetrieveAPIView):
+    serializer_class = NewsDetailSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return News.objects.all()
+
+
+class NewsCreateAPI(generics.CreateAPIView):
+    serializer_class = NewsDetailSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class NewsUpdateDestroyAPI(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = NewsDetailSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+        if user.is_superuser:
+            return News.objects.all()
+        else:
+            objects = user.get_news()
+            return objects
+
+
+class CommentCreateAPI(generics.CreateAPIView):
+    serializer_class = NewsCommentsSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class CommentUpdateDestroyAPI(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = NewsCommentsSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+        if user.is_superuser:
+            return NewsDiscussItem.objects.all()
+        else:
+            comments = user.get_comments()
+            users_comments = [i.comments.pk for i in comments]
+            return NewsDiscussItem.objects.filter(pk__in=users_comments)

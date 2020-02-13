@@ -34,7 +34,7 @@ class News(models.Model):
     #                           default='news_avatars/no_news.jpg', blank=True)
     creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
-    author = models.ForeignKey(Users, verbose_name='Автор', on_delete=models.CASCADE, default=1)
+    author = models.ForeignKey(Users, verbose_name='Автор', related_name='authors_news', on_delete=models.CASCADE, default=1)
     status = models.CharField(verbose_name='статус', max_length=20, choices=NEWS_STATUS_CHOICES, default=FORMING)
 
     def get_absolute_url(self):
@@ -60,8 +60,7 @@ class News(models.Model):
 
 class NewsProduct(models.Model):
     """ Модель связи продукта и новости  """
-    news = models.ForeignKey(News, verbose_name='Новость', related_name="solutions",
-                             on_delete=models.CASCADE)
+    news = models.ForeignKey(News, verbose_name='Новость', related_name="solutions", on_delete=models.CASCADE)
     techsol = models.ForeignKey(TechnicalSolutions, verbose_name='Техническое решение', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -76,9 +75,9 @@ class NewsProduct(models.Model):
 
 class NewsDiscussItem(models.Model):
     news = models.ForeignKey(News, verbose_name='новость обсуждения', related_name='comments', on_delete=models.CASCADE)
-    user = models.ForeignKey(Users, verbose_name='участник обсуждения', on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, verbose_name='участник обсуждения', related_name='users_comments', on_delete=models.CASCADE)
     comment = models.TextField(verbose_name='добавить сообщение', max_length=1500)
     creation_date = models.DateTimeField(verbose_name='создан', auto_now_add=True, auto_now=False)
 
     def __str__(self):
-        return self.comment
+        return self.pk

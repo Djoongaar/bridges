@@ -24,14 +24,14 @@ urlpatterns = [
     path('discuss/items/update/<int:comment_pk>/', projectsapp.comment_update, name='comment_update'),
     path('discuss/items/delete/<int:project_pk>/<int:pk>/', projectsapp.CommentDeleteView.as_view(), name='comment_delete'),
 
-    # REST
+    # REST FRAMEWORK
     path('api/v1/project/list/', ProjectListAPI.as_view()),
     path('api/v1/project/create/', ProjectCreateAPI.as_view()),
     path('api/v1/project/update/<int:pk>/', ProjectUpdateDestroyAPI.as_view()),
     path('api/v1/project/detail/<int:pk>/', ProjectDetailAPI.as_view()),
     path('api/v1/project/update/<int:pk>/comment/list/', CommentListAPI.as_view()),
-    path('api/v1/project/update/<int:pk>/comment/create/', CommentCreateAPI.as_view()),
-    path('api/v1/project/update/comment/update/<int:pk>/', CommentUpdateDestroyAPI.as_view()),
+    # path('api/v1/project/update/<int:pk>/comment/create/', CommentCreateAPI.as_view()),
+    # path('api/v1/project/update/comment/update/<int:pk>/', CommentUpdateDestroyAPI.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
