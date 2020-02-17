@@ -1,6 +1,6 @@
-django-guardian
 a==1.0
 alabaster==0.7.12
+asgiref==3.2.3
 Babel==2.7.0
 certifi==2019.6.16
 chardet==3.0.4
@@ -8,10 +8,15 @@ Click==7.0
 colorama==0.4.1
 defusedxml==0.6.0
 Django==2.2
+django-allauth==0.41.0
 django-appconf==1.0.3
+django-debug-toolbar==2.2
+django-debug-toolbar-template-profiler==2.0.0
+django-extensions==2.2.8
+django-guardian==2.2.0
 django-imagekit==4.0.2
 djangorestframework==3.10.3
-docutils==0.15.0
+docutils==0.15
 idna==2.8
 imagesize==1.1.0
 Jinja2==2.10.1
@@ -45,3 +50,4 @@ sqlparse==0.3.0
 transliterate==1.10.2
 urllib3==1.25.3
 virtualenv==16.7.7
+wrapt==1.11.2
