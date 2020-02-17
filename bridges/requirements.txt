@@ -11,9 +11,8 @@ Django==2.2
 django-appconf==1.0.3
 django-imagekit==4.0.2
 djangorestframework==3.10.3
-docutils==0.15.1
+docutils==0.15.0
 idna==2.8
-imagekit==1.0.6
 imagesize==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
